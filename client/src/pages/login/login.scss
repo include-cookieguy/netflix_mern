@@ -1,0 +1,189 @@
+.login {
+  background-image: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.8) 0,
+      rgba(0, 0, 0, 0.4) 60%,
+      rgba(0, 0, 0, 0.8) 100%
+    ),
+    url('http://mppmduse2pmpovwapp.azurewebsites.net/wp-content/uploads/2019/09/netflix-background-9.jpg');
+  background-size: cover;
+
+  .container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    h1 {
+      font-size: 3rem;
+    }
+
+    form {
+      width: 300px;
+      padding: 60px;
+      border-radius: 5px;
+      background-color: rgba(0, 0, 0, 0.75);
+      color: var(--main-color);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+
+      .error-submit {
+        margin-top: 20px;
+        padding: 10px;
+        font-size: 1.3rem;
+        border-radius: 3px;
+        background-color: var(--error-color);
+        color: var(--main-color);
+      }
+
+      .input {
+        width: 100%;
+        height: 50px;
+        background-color: var(--main-color);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 10px;
+
+        .input-field {
+          width: 100%;
+          height: 100%;
+          position: relative;
+
+          input {
+            border: none;
+            outline: none;
+            padding: 0px 10px;
+            padding-top: 20px;
+            font-size: 1.6rem;
+
+            &:focus ~ .placeholder {
+              transform: translateY(-75%);
+              font-size: 1.2rem;
+              font-weight: 600;
+            }
+          }
+
+          .trans-placeholder {
+            transform: translateY(-75%);
+            font-size: 1.2rem !important;
+            font-weight: 600;
+          }
+
+          .placeholder {
+            position: absolute;
+            font-size: 1.6rem;
+            top: 16px;
+            left: 10px;
+            color: gray;
+            pointer-events: none;
+            transition: all 0.2s ease-in-out;
+          }
+
+          .show-pass {
+            position: absolute;
+            top: 18px;
+            right: 10px;
+            font-size: 1.3rem;
+            cursor: pointer;
+            color: gray;
+          }
+        }
+      }
+
+      .error {
+        margin-top: 4px;
+        color: var(--error-color);
+        font-size: 1.3rem;
+      }
+
+      .remember {
+        display: flex;
+        justify-content: space-between;
+        font-size: 1.3rem;
+        margin: 10px 0px 30px 0px;
+        color: gray;
+
+        label {
+          margin: auto;
+          position: relative;
+          margin-left: 5px;
+
+          &::before {
+            content: '';
+            position: absolute;
+            display: block;
+            top: 0;
+            left: 10px;
+            background-color: #737373;
+            border-radius: 2px;
+            border: 0;
+            height: 16px;
+            left: -19px;
+            width: 16px;
+          }
+
+          .check {
+            position: absolute;
+            display: none;
+            color: black;
+            top: 1px;
+            font-weight: 500;
+            left: -18px;
+          }
+        }
+
+        a {
+          color: gray;
+          text-decoration: none;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+
+        input[type='checkbox']:checked + label .check {
+          display: block;
+        }
+
+        .checkbox-input {
+          opacity: 0;
+        }
+      }
+
+      button {
+        width: 100%;
+        height: 50px;
+        border-radius: 5px;
+        background-color: var(--second-bg-color);
+        color: var(--main-color);
+        margin-top: 30px;
+        border: none;
+        font-size: 18px;
+        font-weight: 500;
+        cursor: pointer;
+      }
+
+      .new-to {
+        font-size: 1.6rem;
+        color: gray;
+
+        p {
+          margin-bottom: 10px;
+
+          .sign-up-now {
+            cursor: pointer;
+            font-weight: 700;
+
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+        }
+      }
+    }
+  }
+}

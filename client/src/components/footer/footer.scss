@@ -1,0 +1,44 @@
+.footer {
+  background-color: var(--main-bg-color);
+
+  a {
+    text-decoration: none;
+    color: #757575;
+    font-size: 1.6rem;
+
+    &:hover {
+      text-decoration: #757575 underline;
+    }
+  }
+
+  li {
+    list-style: none;
+  }
+
+  .wrapper {
+    max-width: 850px;
+    margin: auto;
+    padding: 30px 0px;
+
+    .links {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 10px 0px;
+
+      li {
+        margin: 12px 0px;
+      }
+
+      a {
+        font-size: 1.2rem;
+      }
+    }
+
+    .language {
+      padding: 10px;
+      background-color: var(--main-bg-color);
+      color: var(--main-color);
+    }
+  }
+}

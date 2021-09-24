@@ -1,0 +1,87 @@
+.navbar {
+  color: var(--main-color);
+  font-size: 1.4rem;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  height: 70px;
+  background-color: var(--main-bg-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &.scrolled {
+    background-color: var(--main-bg-color) !important;
+  }
+
+  .left {
+    display: flex;
+    align-items: center;
+    margin-left: 30px;
+
+    img {
+      height: 30px;
+      margin-right: 40px;
+    }
+    span {
+      margin-right: 20px;
+      cursor: pointer;
+    }
+  }
+
+  .right {
+    display: flex;
+    align-items: center;
+    margin-right: 30px;
+
+    .icon {
+      margin: 0px 15px;
+      cursor: pointer;
+      font-size: 1.4em;
+    }
+    img {
+      width: 30px;
+      height: 30px;
+      border-radius: 5px;
+      object-fit: cover;
+      cursor: pointer;
+    }
+    .profile {
+      position: relative;
+
+      .options {
+        display: none;
+        background-color: var(--main-bg-color);
+        border-radius: 5px;
+      }
+
+      span {
+        padding: 10px;
+        cursor: pointer;
+      }
+
+      &:hover {
+        .options {
+          display: flex;
+          flex-direction: column;
+          position: absolute;
+        }
+      }
+    }
+  }
+  .auth {
+    margin-right: 30px;
+    text-decoration: none;
+    color: var(--main-color);
+
+    span {
+      background-color: var(--second-bg-color);
+      padding: 5px 10px;
+      font-size: 1.6rem;
+      font-weight: 500;
+      border-radius: 3px;
+    }
+  }
+}

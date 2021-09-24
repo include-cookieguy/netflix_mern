@@ -1,0 +1,20 @@
+.home {
+  background-color: var(--main-bg-color);
+  color: var(--main-color);
+  height: 200vh;
+
+  .hero-card {
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+    background-image: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.8) 0,
+        rgba(0, 0, 0, 0) 60%,
+        rgba(0, 0, 0, 0.8) 100%
+      ),
+      url('https://assets.nflxext.com/ffe/siteui/vlv3/d9cb1eea-62ee-4ec1-9b90-8d98874b8867/7ac0addb-1541-413a-9b6e-f4f5b38e9c4f/VN-en-20210817-popsignuptwoweeks-perspective_alpha_website_small.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+}
