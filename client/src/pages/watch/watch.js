@@ -1,20 +1,26 @@
-import { ArrowBackOutlined } from '@material-ui/icons';
-import React from 'react';
-import './watch.scss';
+import { ArrowBackOutlined } from "@material-ui/icons";
+import { Link } from "react-router-dom";
+import React from "react";
+import "./watch.scss";
+import { useLocation } from "react-router";
 
 const Watch = () => {
+  const location = useLocation();
+
   return (
-    <div className='watch'>
-      <div className='back'>
-        <ArrowBackOutlined />
-        Home
-      </div>
+    <div className="watch">
+      <Link to="/">
+        <div className="back">
+          <ArrowBackOutlined />
+          Home
+        </div>
+      </Link>
       <video
-        className='video'
+        className="video"
         autoPlay
         onProgress
         controls
-        src='https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4'
+        src={location.state.movie.video}
       />
     </div>
   );

@@ -1,4 +1,4 @@
-const Movie = require('../models/Movie');
+const Movie = require("../models/Movie");
 
 const movieCtrl = {
   createMovie: async (req, res) => {
@@ -12,6 +12,7 @@ const movieCtrl = {
           posterSm,
           trailer,
           video,
+          country,
           year,
           limitAge,
           genre,
@@ -22,7 +23,7 @@ const movieCtrl = {
         if (title_movie) {
           return res
             .status(400)
-            .json({ msg: 'This movie has already existed.' });
+            .json({ msg: "This movie has already existed." });
         }
 
         const newMovie = new Movie({
@@ -33,6 +34,7 @@ const movieCtrl = {
           posterSm,
           trailer,
           video,
+          country,
           year,
           limitAge,
           genre,
@@ -42,14 +44,14 @@ const movieCtrl = {
         await newMovie.save();
 
         res.json({
-          msg: 'Movie has been successfully created.',
+          msg: "Movie has been successfully created.",
           movie: newMovie._doc,
         });
       } catch (err) {
         return res.status(500).json({ msg: err.message });
       }
     } else {
-      res.status(403).json('You are not allowed to post a movie.');
+      res.status(403).json("You are not allowed to post a movie.");
     }
   },
 
@@ -57,8 +59,8 @@ const movieCtrl = {
     try {
       const movie = await Movie.findById(req.params.id);
       if (!movie)
-        return res.status(400).json({ msg: 'This movie does not exist.' });
-      res.json({ movie });
+        return res.status(400).json({ msg: "This movie does not exist." });
+      res.json(movie);
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
@@ -68,7 +70,7 @@ const movieCtrl = {
     const type = req.query.type;
     let movie;
     try {
-      if (type === 'series') {
+      if (type === "series") {
         movie = await Movie.aggregate([
           { $match: { isSeries: true } },
           { $sample: { size: 1 } },
@@ -98,6 +100,7 @@ const movieCtrl = {
           trailer,
           video,
           year,
+          country,
           limitAge,
           genre,
           isSeries,
@@ -111,18 +114,19 @@ const movieCtrl = {
           posterSm,
           trailer,
           video,
+          country,
           year,
           limitAge,
           genre,
           isSeries,
         });
 
-        res.json({ msg: 'Movie has been successfully updated.' });
+        res.json({ msg: "Movie has been successfully updated." });
       } catch (err) {
         return res.status(500).json({ msg: err.message });
       }
     } else {
-      res.status(403).json('You are not allowed to update a movie.');
+      res.status(403).json("You are not allowed to update a movie.");
     }
   },
 
@@ -131,12 +135,12 @@ const movieCtrl = {
       try {
         await Movie.findByIdAndDelete(req.params.id);
 
-        res.json({ msg: 'Movie has been successfully deleted.' });
+        res.json({ msg: "Movie has been successfully deleted." });
       } catch (err) {
         return res.status(500).json({ msg: err.message });
       }
     } else {
-      res.status(403).json('You are not allowed to delete a movie.');
+      res.status(403).json("You are not allowed to delete a movie.");
     }
   },
 };

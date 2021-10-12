@@ -12,6 +12,11 @@
   align-items: center;
   justify-content: space-between;
 
+  a {
+    color: #fff;
+    text-decoration: none;
+  }
+
   &.scrolled {
     background-color: var(--main-bg-color) !important;
   }

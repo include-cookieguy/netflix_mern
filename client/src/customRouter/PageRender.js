@@ -1,6 +1,7 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
-import NotFound from '../pages/notfound/NotFound';
+import React from "react";
+import { useParams } from "react-router-dom";
+import NotFound from "../pages/notfound/NotFound";
+import { useSelector } from "react-redux";
 
 const generatePage = (pageName) => {
   const component = () => require(`../pages/${pageName}/${pageName}`).default;
@@ -14,9 +15,11 @@ const generatePage = (pageName) => {
 
 const PageRender = () => {
   const { page, id } = useParams();
-  let pageName = '';
+  const { auth } = useSelector((state) => state);
 
-  if (localStorage.getItem('access_token')) {
+  let pageName = "";
+
+  if (auth.token) {
     if (id) {
       pageName = `${page}/[id]`;
     } else {

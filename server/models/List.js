@@ -15,7 +15,7 @@ const ListSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    content: { type: mongoose.Types.ObjectId, ref: 'Movie' },
+    content: [{ type: mongoose.Types.ObjectId, ref: 'Movie' }],
   },
   {
     timestamps: true,

@@ -1,43 +1,47 @@
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Home from './pages/home/home';
-import Register from './pages/register/register';
-import PrivateRouter from './customRouter/PrivateRouter';
-import PageRender from './customRouter/PageRender';
-import Login from './pages/login/login';
-import NotFound from './pages/notfound/NotFound';
-import Submit from './pages/submit/submit';
-import Alert from './components/alert/Alert';
-import './app.scss';
-import { useSelector } from 'react-redux';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Home from "./pages/home/Home";
+import Register from "./pages/register/Register";
+import Login from "./pages/login/Login";
+import NotFound from "./pages/notfound/NotFound";
+import Submit from "./pages/submit/Submit";
+import Alert from "./components/alert/Alert";
+import "./app.scss";
+import { useDispatch, useSelector } from "react-redux";
+import { refreshToken } from "./redux/actions/authAction";
+import { useEffect } from "react";
+import Watch from "./pages/watch/Watch";
 
 const App = () => {
   const { auth } = useSelector((state) => state);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(refreshToken());
+  }, [dispatch]);
 
   return (
     <Router>
       <Alert />
       <Switch>
-        <Route
-          exact
-          path='/'
-          component={localStorage.getItem('access_token') ? Home : Register}
-        />
-        <Route exact path='/login' component={Login} />
-        {/* {localStorage.getItem('access_token') && (
-          <>
-            <Route exact path='/movies'>
-              <Home type='movies' />
-            </Route>
-            <Route exact path='/series'>
-              <Home type='series' />
-            </Route>
-          </>
-        )} */}
-        <Route path='/submit' component={Submit} />
-        <Route exact path='/notfound' component={NotFound} />
-
-        <PrivateRouter exact path='/:page' component={PageRender} />
-        <PrivateRouter exact path='/:page/:id' component={PageRender} />
+        <Route exact path="/" component={auth.token ? Home : Register} />
+        <Route exact path="/login" component={Login} />
+        {/* <Route exact path="/submit" component={Submit} /> */}
+        {auth.token && (
+          <Route exact path="/movies">
+            <Home type="movie" />
+          </Route>
+        )}
+        {auth.token && (
+          <Route exact path="/series">
+            <Home type="series" />
+          </Route>
+        )}
+        {auth.token && (
+          <Route exact path="/watch">
+            <Watch />
+          </Route>
+        )}
+        <Route exact path="*" component={NotFound} />
       </Switch>
     </Router>
   );

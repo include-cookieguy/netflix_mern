@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const MovieSchema = new mongoose.Schema(
   {
@@ -17,7 +17,6 @@ const MovieSchema = new mongoose.Schema(
     },
     posterTitle: {
       type: String,
-      required: true,
     },
     posterSm: {
       type: String,
@@ -36,11 +35,20 @@ const MovieSchema = new mongoose.Schema(
     },
     limitAge: {
       type: Number,
+      required: true,
     },
     genre: {
       type: String,
       required: true,
     },
+    country: {
+      type: String,
+      required: true,
+    },
+    imdb: {
+      type: mongoose.SchemaTypes.Decimal128,
+    },
+    actors: [{ type: mongoose.Types.ObjectId, ref: "Actor" }],
     isSeries: {
       type: Boolean,
       default: false,
@@ -51,4 +59,4 @@ const MovieSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model('Movie', MovieSchema);
+module.exports = mongoose.model("Movie", MovieSchema);

@@ -1,6 +1,6 @@
-const User = require('../models/User');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const User = require("../models/User");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const authCtrl = {
   register: async (req, res) => {
@@ -26,20 +26,20 @@ const authCtrl = {
         isAdmin: newUser.isAdmin,
       });
 
-      res.cookie('refreshtoken', refresh_token, {
+      res.cookie("refreshtoken", refresh_token, {
         httpOnly: true,
-        path: '/api/refresh_token',
+        path: "/api/refresh_token",
         maxAge: 30 * 24 * 60 * 60 * 1000, // 30days
       });
 
       await newUser.save();
 
       res.json({
-        msg: 'Register successfully!',
+        msg: "Register successfully!",
         access_token,
         user: {
           ...newUser._doc,
-          password: '',
+          password: "",
         },
       });
     } catch (err) {
@@ -55,12 +55,12 @@ const authCtrl = {
 
       if (user_email) {
         return res.status(400).json({
-          msg: 'Sorry, the email you have entered is already registered. Please use another email.',
+          msg: "Sorry, the email you have entered is already registered. Please use another email.",
         });
       }
 
       res.json({
-        msg: 'Your email is valid.',
+        msg: "Your email is valid.",
         email,
       });
     } catch (err) {
@@ -83,7 +83,7 @@ const authCtrl = {
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
         return res.status(400).json({
-          msg: 'Incorrect password. Please try again or you can reset your password.',
+          msg: "Incorrect password. Please try again or you can reset your password.",
         });
       }
 
@@ -96,18 +96,18 @@ const authCtrl = {
         isAdmin: user.isAdmin,
       });
 
-      res.cookie('refreshtoken', refresh_token, {
+      res.cookie("refreshtoken", refresh_token, {
         httpOnly: true,
-        path: '/api/refresh_token',
+        path: "/api/refresh_token",
         maxAge: 30 * 24 * 60 * 60 * 1000, // 30days
       });
 
       res.json({
-        msg: 'Login successully!',
+        msg: "Login successully!",
         access_token,
         user: {
           ...user._doc,
-          password: '',
+          password: "",
         },
       });
     } catch (err) {
@@ -117,8 +117,8 @@ const authCtrl = {
 
   logout: async (req, res) => {
     try {
-      res.clearCookie('refreshtoken', { path: '/api/refresh_token' });
-      return res.json({ msg: 'Logged out.' });
+      res.clearCookie("refreshtoken", { path: "/api/refresh_token" });
+      return res.json({ msg: "Logged out." });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
@@ -127,18 +127,18 @@ const authCtrl = {
   generateAccessToken: async (req, res) => {
     try {
       const rf_token = req.cookies.refreshtoken;
-      if (!rf_token) return res.status(400).json({ msg: 'Please login now.' });
+      if (!rf_token) return res.status(400).json({ msg: "Please login now." });
 
       jwt.verify(
         rf_token,
         process.env.REFRESH_TOKEN_SECRET,
         async (err, result) => {
-          if (err) return res.status(400).json({ msg: 'Please login now.' });
+          if (err) return res.status(400).json({ msg: "Please login now." });
 
-          const user = await User.findById(result.id).select('-password');
+          const user = await User.findById(result.id).select("-password");
 
           if (!user) {
-            return res.status(400).json({ msg: 'This user does not exist.' });
+            return res.status(400).json({ msg: "This user does not exist." });
           }
 
           const access_token = createAccessToken({ id: result.id });
@@ -158,13 +158,13 @@ const authCtrl = {
 
 const createAccessToken = (payload) => {
   return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: '20s',
+    expiresIn: "1d",
   });
 };
 
 const createRefreshToken = (payload) => {
   return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {
-    expiresIn: '30d',
+    expiresIn: "30d",
   });
 };
 
