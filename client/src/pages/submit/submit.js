@@ -1,32 +1,38 @@
-import React, { useEffect, useState } from 'react';
-import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
-import './submit.scss';
-import Step1 from '../../components/step-register/Step1';
-import Step2 from '../../components/step-register/Step2';
-import Step3 from '../../components/step-register/Step3';
-import Completed from '../../components/step-register/Completed';
-import { useSelector } from 'react-redux';
-import Navbar from '../../components/navbar/Navbar';
-import Footer from '../../components/footer/Footer';
+import React, { useEffect, useState } from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  useHistory,
+  useLocation,
+} from "react-router-dom";
+import "./submit.scss";
+import Step1 from "../../components/step-register/Step1";
+import Step2 from "../../components/step-register/Step2";
+import Step3 from "../../components/step-register/Step3";
+import Completed from "../../components/step-register/Completed";
+import { useSelector } from "react-redux";
+import Navbar from "../../components/navbar/Navbar";
+import Footer from "../../components/footer/Footer";
 
 const Submit = () => {
   const info = {
     account: {
-      username: '',
-      email: '',
-      password: '',
-      birthday: '',
+      username: "",
+      email: "",
+      password: "",
+      birthday: "",
     },
     plan: {
-      price: '',
-      type: '',
+      price: "",
+      type: "",
     },
     card: {
-      firstName: '',
-      lastName: '',
-      cardNumber: '',
-      expiredDate: '',
-      securityCode: '',
+      firstName: "",
+      lastName: "",
+      cardNumber: "",
+      expiredDate: "",
+      securityCode: "",
     },
   };
 
@@ -40,14 +46,14 @@ const Submit = () => {
     if (!auth.user) {
       setInfoRegister((infoRegister) => ({
         ...infoRegister,
-        email: auth.infoRegis.account.email || '',
+        email: auth.infoRegis.account.email || "",
       }));
     }
-  }, [auth.infoRegis.account.email, auth.user]);
+  }, [auth.user]);
 
   useEffect(() => {
     if (auth.token) {
-      history.replace('/');
+      history.replace("/");
     }
   }, [auth, history]);
 
@@ -56,23 +62,25 @@ const Submit = () => {
   }, [location]);
 
   return (
-    <div className='submit'>
-      <Navbar bgColor='#fff' borderBottom='1px solid #e6e6e6' />
-      <div className='container'>
-        <Switch>
-          <Route path='/submit/step1'>
-            <Step1 transEmail={infoRegister.email} />
-          </Route>
-          <Route path='/submit/step2'>
-            <Step2 />
-          </Route>
-          <Route path='/submit/step3'>
-            <Step3 />
-          </Route>
-          <Route path='/submit/completed'>
-            <Completed />
-          </Route>
-        </Switch>
+    <div className="submit">
+      <Navbar bgColor="#fff" borderBottom="1px solid #e6e6e6" />
+      <div className="container">
+        <Router>
+          <Switch>
+            <Route exact path="/submit">
+              <Step1 transEmail={infoRegister.email} />
+            </Route>
+            <Route exact path="/submit/step2">
+              <Step2 />
+            </Route>
+            <Route exact path="/submit/step3">
+              <Step3 />
+            </Route>
+            <Route exact path="/submit/completed">
+              <Completed />
+            </Route>
+          </Switch>
+        </Router>
       </div>
       <Footer />
     </div>

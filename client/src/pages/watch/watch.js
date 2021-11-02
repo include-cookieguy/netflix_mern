@@ -18,7 +18,6 @@ const Watch = () => {
       <video
         className="video"
         autoPlay
-        onProgress
         controls
         src={location.state.movie.video}
       />

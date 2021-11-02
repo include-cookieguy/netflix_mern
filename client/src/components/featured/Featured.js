@@ -1,69 +1,110 @@
-import { InfoOutlined, PlayArrow } from "@material-ui/icons";
+import { InfoOutlined } from "@material-ui/icons";
 import React, { useEffect, useState } from "react";
+import Category from "../category/Category";
 import { getDataAPI } from "../../utils/fetchData";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useLocation } from "react-router-dom";
+import InfoModal from "../infomodal/InfoModal";
 import "./featured.scss";
 
-const Featured = ({ type }) => {
+const Featured = ({ type, listRandom }) => {
   const [bigMovie, setBigMovie] = useState({});
-  const { auth } = useSelector((state) => state);
+  const [infoModal, setInfoModal] = useState(false);
+  const [effectTitle, setEffectTitle] = useState(false);
+  const [feature, setFeature] = useState("image");
+  const { auth, genre } = useSelector((state) => state);
+  const [pathName, setPathName] = useState("/");
+  const [genreChange, setGenreChange] = useState("");
+  const [listContainMovie, setListContainMovie] = useState([]);
+  const location = useLocation();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const getBigMovie = async () => {
+      //`lists${type ? "?type=" + type : ""}${genre ? "&genre=" + genre : ""
       try {
-        const res = await getDataAPI(`movie/random?type=${type}`, auth.token);
-        setBigMovie(res.data.movie[0]);
+        const res = await getDataAPI(
+          `movie/random${type ? "?type=" + type : ""}${
+            type && genre ? "&genre=" + genre : ""
+          }`,
+          auth.token
+        );
+
+        setBigMovie(res.data);
       } catch (err) {
         console.log(err);
       }
     };
     getBigMovie();
-  }, [auth.token, type]);
+  }, [auth.token, type, genre]);
+
+  useEffect(() => {
+    const listContain = listRandom.filter((e) => {
+      let found;
+      if (e.content.includes(bigMovie._id)) {
+        found = e;
+      }
+      return found;
+    })[0];
+
+    if (listContain) setListContainMovie(listContain.result);
+  }, [bigMovie, listRandom]);
+
+  useEffect(() => {
+    const effectTimeout = setTimeout(() => {
+      setEffectTitle(true);
+    }, 6000);
+    if (feature === "image") {
+      var featureTimeout = setTimeout(() => {
+        setFeature("video");
+      }, 2500);
+    }
+    if (pathName !== location.pathname || genreChange !== genre) {
+      setFeature("image");
+      setEffectTitle(false);
+      setGenreChange(genre);
+      setPathName(location.pathname);
+    }
+
+    return () => {
+      clearTimeout(effectTimeout);
+      clearTimeout(featureTimeout);
+    };
+  }, [location.pathname, pathName, feature, dispatch, genre, genreChange]);
 
   return (
     <div className="featured">
-      {type && (
-        <div className="category">
-          <span>{type === "movie" ? "Movies" : "Series"}</span>
-          <select name="genre" id="genre">
-            <option disabled>Genre</option>
-            <option value="adventure">Adventure</option>
-            <option value="comedy">Comedy</option>
-            <option value="crime">Crime</option>
-            <option value="fantasy">Fantasy</option>
-            <option value="historical">Historical</option>
-            <option value="horror">Horror</option>
-            <option value="romance">Romance</option>
-            <option value="sci-fi">Sci-fi</option>
-            <option value="thriller">Thriller</option>
-            <option value="western">Western</option>
-            <option value="animation">Animation</option>
-            <option value="drama">Drama</option>
-            <option value="documentary">Documentary</option>
-          </select>
-        </div>
+      {type && <Category type={type} />}
+      {feature === "image" ? (
+        <img src={bigMovie.poster} alt="Movie background" className="poster" />
+      ) : (
+        <video className="video" autoPlay controls src={bigMovie.trailer} />
       )}
-      <img src={bigMovie.poster} alt="Movie background" />
-      <div className="info">
-        {/* <img
-          src="https://toppng.com/uploads/preview/clip-art-royalty-free-stock-avenger-png-for-free-download-avengers-infinity-war-logo-11563078371paziravl4y.png"
-          alt="Movie name"
-        /> */}
-        <span className="desc">{bigMovie.desc}</span>
+      <div className={`info ${effectTitle && "effect"}`}>
+        <img src={bigMovie.posterTitle} alt="Movie name" className="title" />
+        <p className="desc">{bigMovie.desc}</p>
         <div className="buttons">
           <Link to={{ pathname: "/watch", state: { movie: bigMovie } }}>
             <button className="play">
-              <PlayArrow />
+              <i className="fas fa-play" style={{ fontSize: "14px" }}></i>
               <span>Play</span>
             </button>
           </Link>
-          <button className="more">
+          <button className="more" onClick={() => setInfoModal(true)}>
             <InfoOutlined />
-            <span>Info</span>
+            <span> More Info</span>
           </button>
+          {infoModal && (
+            <InfoModal
+              infoModal={infoModal}
+              setInfoModal={setInfoModal}
+              bigMovie={bigMovie}
+              recommend={listContainMovie}
+            />
+          )}
         </div>
       </div>
+      <span className="age">{bigMovie.limitAge}+</span>
     </div>
   );
 };

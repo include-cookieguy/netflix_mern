@@ -5,7 +5,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 10;
+  z-index: 5;
   height: 70px;
   background-color: var(--main-bg-color);
   display: flex;
@@ -33,6 +33,15 @@
     span {
       margin-right: 20px;
       cursor: pointer;
+      color: rgb(150, 150, 150);
+
+      &:hover {
+        color: rgb(190, 190, 190);
+      }
+    }
+
+    .active-nav {
+      color: #fff !important;
     }
   }
 
@@ -55,6 +64,7 @@
     }
     .profile {
       position: relative;
+      right: 5px;
 
       .options {
         display: none;

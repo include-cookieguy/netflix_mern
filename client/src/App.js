@@ -8,8 +8,10 @@ import Alert from "./components/alert/Alert";
 import "./app.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { refreshToken } from "./redux/actions/authAction";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import Watch from "./pages/watch/Watch";
+import MyList from "./pages/mylist/MyList";
+import { getFav } from "./redux/actions/userAction";
 
 const App = () => {
   const { auth } = useSelector((state) => state);
@@ -19,13 +21,19 @@ const App = () => {
     dispatch(refreshToken());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (auth.token) {
+      dispatch(getFav(auth));
+    }
+  }, [auth, dispatch]);
+
   return (
     <Router>
       <Alert />
       <Switch>
         <Route exact path="/" component={auth.token ? Home : Register} />
         <Route exact path="/login" component={Login} />
-        {/* <Route exact path="/submit" component={Submit} /> */}
+        <Route exact path="/submit" component={Submit} />
         {auth.token && (
           <Route exact path="/movies">
             <Home type="movie" />
@@ -39,6 +47,11 @@ const App = () => {
         {auth.token && (
           <Route exact path="/watch">
             <Watch />
+          </Route>
+        )}
+        {auth.token && (
+          <Route exact path="/mylist">
+            <MyList />
           </Route>
         )}
         <Route exact path="*" component={NotFound} />

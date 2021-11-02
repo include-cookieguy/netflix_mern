@@ -1,3 +1,4 @@
+const List = require("../models/List");
 const Movie = require("../models/Movie");
 
 const movieCtrl = {
@@ -25,6 +26,7 @@ const movieCtrl = {
           year,
           limitAge,
           genre,
+          imdb,
           isSeries,
         } = req.body;
 
@@ -47,6 +49,7 @@ const movieCtrl = {
           year,
           limitAge,
           genre,
+          imdb,
           isSeries,
         });
 
@@ -77,21 +80,40 @@ const movieCtrl = {
 
   getRandomMovie: async (req, res) => {
     const type = req.query.type;
+    const genreQuery = req.query.genre;
+    let list;
     let movie;
+
     try {
-      if (type === "series") {
-        movie = await Movie.aggregate([
-          { $match: { isSeries: true } },
-          { $sample: { size: 1 } },
-        ]);
+      if (type) {
+        if (genreQuery) {
+          list = await List.aggregate([
+            { $match: { type: type, genre: genreQuery } },
+            { $sample: { size: 1 } },
+          ]);
+          const res = list[0].content;
+          movie = await Movie.findById(
+            res[Math.floor(Math.random() * res.length)]
+          );
+        } else {
+          list = await List.aggregate([
+            { $match: { type: type } },
+            { $sample: { size: 1 } },
+          ]);
+          const res = list[0].content;
+          movie = await Movie.findById(
+            res[Math.floor(Math.random() * res.length)]
+          );
+        }
       } else {
-        movie = await Movie.aggregate([
-          { $match: { isSeries: false } },
-          { $sample: { size: 1 } },
-        ]);
+        list = await List.aggregate([{ $sample: { size: 1 } }]);
+        const res = list[0].content;
+        movie = await Movie.findById(
+          res[Math.floor(Math.random() * res.length)]
+        );
       }
 
-      res.json({ movie });
+      res.json(movie);
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
@@ -112,6 +134,7 @@ const movieCtrl = {
           country,
           limitAge,
           genre,
+          imdb,
           isSeries,
         } = req.body;
 
@@ -127,6 +150,7 @@ const movieCtrl = {
           year,
           limitAge,
           genre,
+          imdb,
           isSeries,
         });
 

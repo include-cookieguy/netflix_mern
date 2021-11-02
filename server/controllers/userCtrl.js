@@ -1,6 +1,6 @@
-const User = require('../models/User');
-const bcrypt = require('bcrypt');
-const Movie = require('../models/Movie');
+const User = require("../models/User");
+const bcrypt = require("bcrypt");
+const Movie = require("../models/Movie");
 
 const userCtrl = {
   getAllUsers: async (req, res) => {
@@ -14,8 +14,8 @@ const userCtrl = {
 
   getUser: async (req, res) => {
     try {
-      const user = await User.findById(req.params.id).select('-password');
-      if (!user) return res.status(400).json({ msg: 'User does not exist.' });
+      const user = await User.findById(req.params.id).select("-password");
+      if (!user) return res.status(400).json({ msg: "User does not exist." });
       res.json({ user });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
@@ -33,7 +33,7 @@ const userCtrl = {
         }
       );
 
-      res.json({ msg: 'Update avatar successfully!' });
+      res.json({ msg: "Update avatar successfully!" });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
@@ -47,7 +47,7 @@ const userCtrl = {
         username,
       });
 
-      res.json({ msg: 'Update username successfully!' });
+      res.json({ msg: "Update username successfully!" });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
@@ -63,7 +63,7 @@ const userCtrl = {
         password: passwordHash,
       });
 
-      res.json({ msg: 'Update password successfully!' });
+      res.json({ msg: "Update password successfully!" });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
@@ -72,8 +72,8 @@ const userCtrl = {
   getMovieFav: async (req, res) => {
     try {
       const favList = await User.findById(req.user.id)
-        .select('favouriteMovie')
-        .populate('favouriteMovie');
+        .select("favouriteMovie")
+        .populate("favouriteMovie");
 
       res.json(favList);
     } catch (err) {
@@ -83,13 +83,18 @@ const userCtrl = {
 
   addMovieToFav: async (req, res) => {
     try {
+      const movie = await Movie.findById(req.params.id);
+      if (!movie) {
+        return res.status(500).json({ msg: "This movie does not exist." });
+      }
+
       const movieAdded = await User.find({
         _id: req.user.id,
         favouriteMovie: req.params.id,
       });
 
       if (movieAdded.length > 0) {
-        return res.status(500).json({ msg: 'You added this movie ago.' });
+        return res.status(500).json({ msg: "You added this movie before." });
       }
 
       await User.findByIdAndUpdate(req.user.id, {
@@ -98,7 +103,10 @@ const userCtrl = {
         },
       });
 
-      res.json({ msg: 'This movie has been added to your favourite list!' });
+      res.json({
+        msg: "This movie has been added to your favourite list!",
+        movie: movie,
+      });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
@@ -122,7 +130,7 @@ const userCtrl = {
       });
 
       res.json({
-        msg: 'This movie has been removed from your favourite list!',
+        msg: "This movie has been removed from your favourite list!",
       });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
@@ -137,7 +145,7 @@ const userCtrl = {
         },
       });
       res.json({
-        msg: 'All movie in favourite list has been deleted!',
+        msg: "All movie in favourite list has been deleted!",
       });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
@@ -148,12 +156,12 @@ const userCtrl = {
     if (req.user.id === req.params.id || req.user.isAdmin) {
       try {
         await User.findByIdAndDelete(req.params.id);
-        res.json({ msg: 'This account has been deleted.' });
+        res.json({ msg: "This account has been deleted." });
       } catch (err) {
         return res.status(500).json({ msg: err.message });
       }
     } else {
-      return res.status(500).json({ msg: 'You can delete only your account!' });
+      return res.status(500).json({ msg: "You can delete only your account!" });
     }
   },
 };
