@@ -5,7 +5,7 @@
       rgba(0, 0, 0, 0.4) 60%,
       rgba(0, 0, 0, 0.8) 100%
     ),
-    url('http://mppmduse2pmpovwapp.azurewebsites.net/wp-content/uploads/2019/09/netflix-background-9.jpg');
+    url("http://mppmduse2pmpovwapp.azurewebsites.net/wp-content/uploads/2019/09/netflix-background-9.jpg");
   background-size: cover;
 
   .container {
@@ -54,6 +54,8 @@
           position: relative;
 
           input {
+            width: 96%;
+            height: 64%;
             border: none;
             outline: none;
             padding: 0px 10px;
@@ -113,7 +115,7 @@
           margin-left: 5px;
 
           &::before {
-            content: '';
+            content: "";
             position: absolute;
             display: block;
             top: 0;
@@ -145,7 +147,7 @@
           }
         }
 
-        input[type='checkbox']:checked + label .check {
+        input[type="checkbox"]:checked + label .check {
           display: block;
         }
 

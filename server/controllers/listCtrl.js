@@ -44,16 +44,42 @@ const listCtrl = {
         if (genreQuery) {
           list = await List.aggregate([
             { $sample: { size: 10 } },
+            {
+              $lookup: {
+                from: "movies",
+                localField: "content",
+                foreignField: "_id",
+                as: "result",
+              },
+            },
             { $match: { type: typeQuery, genre: genreQuery } },
           ]);
         } else {
           list = await List.aggregate([
             { $sample: { size: 10 } },
+            {
+              $lookup: {
+                from: "movies",
+                localField: "content",
+                foreignField: "_id",
+                as: "result",
+              },
+            },
             { $match: { type: typeQuery } },
           ]);
         }
       } else {
-        list = await List.aggregate([{ $sample: { size: 10 } }]);
+        list = await List.aggregate([
+          { $sample: { size: 10 } },
+          {
+            $lookup: {
+              from: "movies",
+              localField: "content",
+              foreignField: "_id",
+              as: "result",
+            },
+          },
+        ]);
       }
 
       res.json(list);

@@ -3,19 +3,20 @@ import React from "react";
 import { useState, useEffect } from "react";
 import Featured from "../../components/featured/Featured";
 import Footer from "../../components/footer/Footer";
-import List from "../../components/list/List";
+import Slider from "../../components/slider/Slider";
 import Navbar from "../../components/navbar/Navbar";
 import { getDataAPI } from "../../utils/fetchData";
 import "./home.scss";
 // import jwt_decode from "jwt-decode";
 import { useDispatch, useSelector } from "react-redux";
+import { GLOBALTYPES } from "../../redux/actions/globalTypes";
+import { useLocation } from "react-router";
 // import { GLOBALTYPES } from "../../redux/actions/globalTypes";
 
 const Home = ({ type }) => {
+  const dispatch = useDispatch();
   const [lists, setLists] = useState([]);
-  const [genre, setGenre] = useState(null);
-  // const dispatch = useDispatch();
-  const { auth } = useSelector((state) => state);
+  const { auth, genre } = useSelector((state) => state);
 
   // const axiosJWT = axios.create();
   // axiosJWT.interceptors.request.use(
@@ -42,7 +43,7 @@ const Home = ({ type }) => {
       try {
         const res = await getDataAPI(
           `lists${type ? "?type=" + type : ""}${
-            genre ? "&genre=" + genre : ""
+            type && genre ? "&genre=" + genre : ""
           }`,
           auth.token
         );
@@ -52,7 +53,7 @@ const Home = ({ type }) => {
       }
     };
     getRandomLists();
-  }, [type, genre, auth.token]);
+  }, [type, auth.token, genre]);
 
   // const refreshToken = async () => {
   //   try {
@@ -73,9 +74,14 @@ const Home = ({ type }) => {
   return (
     <div className="home">
       <Navbar />
-      <Featured type={type} />
+      <Featured type={type} listRandom={lists} />
       {lists.map((list, index) => (
-        <List list={list} key={index} />
+        <Slider
+          mainTitle={list.title}
+          data={list.result}
+          poster={false}
+          key={index}
+        />
       ))}
       <Footer />
     </div>

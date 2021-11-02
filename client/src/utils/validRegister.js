@@ -11,26 +11,28 @@ export const validRegister = {
 
     //STEP 1
     if (!username) {
-      err.username = 'Please add your username.';
+      err.username = "Please add your username.";
     } else if (username.length > 50) {
-      err.username = 'First name is up to 50 characters long.';
+      err.username = "First name is up to 50 characters long.";
     } else if (!validateUsername(username)) {
-      err.username = 'Username format is incorrect.';
+      err.username = "Username format is incorrect.";
     }
 
     if (!email) {
-      err.email = 'Please add your email.';
+      err.email = "Please add your email.";
     } else if (!validateEmail(email)) {
-      err.email = 'Please enter a valid email address';
+      err.email = "Please enter a valid email address";
     }
 
     if (!password) {
-      err.password = 'Please add your password.';
+      err.password = "Please add your password.";
     } else if (password.length < 6) {
-      err.password = 'Password must be at least 6 characters.';
+      err.password = "Password must be at least 6 characters.";
     }
 
-    if (validateBirthday(day, month, year)) {
+    if (!day || !month || !year) {
+      err.birthday = "Please add your date of birth.";
+    } else if (validateBirthday(day, month, year)) {
       err.birthday = validateBirthday(day, month, year);
     }
 
@@ -56,42 +58,42 @@ export const validRegister = {
     const err = {};
 
     if (!firstName) {
-      err.firstName = 'Please add your first name.';
+      err.firstName = "Please add your first name.";
     } else if (firstName.length > 50) {
-      err.firstName = 'First name is up to 50 characters long.';
+      err.firstName = "First name is up to 50 characters long.";
     }
 
     if (!lastName) {
-      err.lastName = 'Please add your first name.';
+      err.lastName = "Please add your first name.";
     } else if (lastName.length > 50) {
-      err.lastName = 'First name is up to 50 characters long.';
+      err.lastName = "First name is up to 50 characters long.";
     }
 
     if (!cardNumber) {
-      err.cardNumber = 'Please add your card number.';
+      err.cardNumber = "Please add your card number.";
     } else if (!validateCardNumber(cardNumber)) {
-      err.cardNumber = 'Please enter your 16 digit credit card numbers';
+      err.cardNumber = "Please enter your 16 digit credit card numbers";
     }
 
     if (!expiredDate) {
-      err.expiredDate = 'Please add expried date of your card number.';
+      err.expiredDate = "Please add expried date of your card number.";
     } else if (
       expiredDate.length !== 5 ||
-      !expiredDate.includes('/') ||
+      !expiredDate.includes("/") ||
       isNaN(parseInt(monthOfExprireDate)) ||
       isNaN(parseInt(yearOfExprireDate))
     ) {
-      err.expiredDate = 'Please enter card number format as MM/YY';
+      err.expiredDate = "Please enter card number format as MM/YY";
     }
 
     if (!securityCode) {
-      err.securityCode = 'Please add security code of your card number.';
+      err.securityCode = "Please add security code of your card number.";
     } else if (securityCode.length !== 3 || isNaN(parseInt(securityCode))) {
-      err.expiredDate = 'Your CVV code is not valid';
+      err.expiredDate = "Your CVV code is not valid";
     }
 
     if (!agree) {
-      err.agree = 'You must agree to the terms and conditions to continue.';
+      err.agree = "You must agree to the terms and conditions to continue.";
     }
 
     return {
@@ -133,22 +135,20 @@ function validateBirthday(day, month, year) {
 
     if (changeMonth === 1 || changeMonth > 2) {
       if (day > ListofDays[changeMonth - 1]) {
-        return 'Day of this month is not valid.';
+        return "Day of this month is not valid.";
       }
     }
 
-    if (changeMonth === '2') {
+    if (changeMonth === "2") {
       let leapYear = false;
       if ((!(year % 4) && year % 100) || !(year % 400)) {
         leapYear = true;
       }
-
-      if (leapYear === false && day >= 29) {
-        return 'This year is not a leap year.';
-      }
-
       if (leapYear === true && day > 29) {
-        return 'February of leap year has up to 29 days';
+        return "February of leap year has up to 29 days";
+      }
+      if (leapYear === false && day > 28) {
+        return "February of non-leap year has up to 28 days";
       }
     }
   }
@@ -156,30 +156,30 @@ function validateBirthday(day, month, year) {
 
 function getMonth(month) {
   switch (month) {
-    case 'Jan':
-      return (month = '1');
-    case 'Feb':
-      return (month = '2');
-    case 'Mar':
-      return (month = '3');
-    case 'Apr':
-      return (month = '4');
-    case 'May':
-      return (month = '5');
-    case 'Jun':
-      return (month = '6');
-    case 'Jul':
-      return (month = '7');
-    case 'Aug':
-      return (month = '8');
-    case 'Sep':
-      return (month = '9');
-    case 'Oct':
-      return (month = '10');
-    case 'Nov':
-      return (month = '11');
-    case 'Dec':
-      return (month = '12');
+    case "Jan":
+      return (month = "1");
+    case "Feb":
+      return (month = "2");
+    case "Mar":
+      return (month = "3");
+    case "Apr":
+      return (month = "4");
+    case "May":
+      return (month = "5");
+    case "Jun":
+      return (month = "6");
+    case "Jul":
+      return (month = "7");
+    case "Aug":
+      return (month = "8");
+    case "Sep":
+      return (month = "9");
+    case "Oct":
+      return (month = "10");
+    case "Nov":
+      return (month = "11");
+    case "Dec":
+      return (month = "12");
     default:
       break;
   }

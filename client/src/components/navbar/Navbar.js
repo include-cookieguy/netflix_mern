@@ -1,15 +1,67 @@
 import { ArrowDropDown, Notifications, Search } from "@material-ui/icons";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { logout } from "../../redux/actions/authAction";
+import { GLOBALTYPES } from "../../redux/actions/globalTypes";
 import "./navbar.scss";
 
 const Navbar = ({ bgColor, color, borderBottom }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const { auth } = useSelector((state) => state);
   const dispatch = useDispatch();
+  const path = [
+    {
+      nameSite: "/",
+      navName: "Home",
+      active: false,
+    },
+    {
+      nameSite: "/series",
+      navName: "Series",
+      active: false,
+    },
+    {
+      nameSite: "/movies",
+      navName: "Movies",
+      active: false,
+    },
+    {
+      nameSite: "/again",
+      navName: "Watch Again",
+      active: false,
+    },
+    {
+      nameSite: "/mylist",
+      navName: "My List",
+      active: false,
+    },
+  ];
+  const [pathName, setPathName] = useState(path);
   const location = useLocation();
+
+  useEffect(() => {
+    const pageCurrent = pathName.filter((e) => {
+      if (e.nameSite === location.pathname) {
+        e.active = true;
+      } else {
+        e.active = false;
+      }
+      return e;
+    });
+    setPathName(pageCurrent);
+    dispatch({ type: GLOBALTYPES.GENRE, payload: "" });
+    dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } });
+    const fakeLoading = setTimeout(() => {
+      dispatch({
+        type: GLOBALTYPES.ALERT,
+        payload: {
+          loading: false,
+        },
+      });
+    }, 1010);
+    return () => clearTimeout(fakeLoading);
+  }, [location.pathname, dispatch]);
 
   window.onscroll = () => {
     setIsScrolled(window.pageYOffset === 0 ? false : true);
@@ -32,31 +84,19 @@ const Navbar = ({ bgColor, color, borderBottom }) => {
             alt="Netflix logo"
           />
         </Link>
-        {auth.token && location.pathname !== "/notfound" && (
-          <>
-            <Link to="/">
-              <span>Homepage</span>
+        {auth.token &&
+          pathName.map((e, i) => (
+            <Link to={`${e.nameSite}`} key={i}>
+              <span className={`${e.active && "active-nav"}`}>{e.navName}</span>
             </Link>
-            <Link to="/series">
-              <span>Series</span>
-            </Link>
-            <Link to="/movies">
-              <span>Movies</span>
-            </Link>
-            <span>New and Popular</span>
-            <span>My List</span>
-          </>
-        )}
+          ))}
       </div>
-      {auth.token && location.pathname !== "/notfound" && (
+      {auth.token && (
         <div className="right">
           <Search className="icon" />
           <span>KID</span>
           <Notifications className="icon" />
-          <img
-            src="https://images.pexels.com/photos/6899260/pexels-photo-6899260.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
-            alt="Navbar avatar"
-          />
+          <img src={auth.user.profilePic} alt="Navbar avatar" />
           <div className="profile">
             <ArrowDropDown className="icon" />
             <div className="options">
@@ -66,7 +106,7 @@ const Navbar = ({ bgColor, color, borderBottom }) => {
           </div>
         </div>
       )}
-      {!auth.token && location.pathname !== "/login" && (
+      {!auth.token && (
         <Link to="/login" className="auth">
           <span>Sign In</span>
         </Link>

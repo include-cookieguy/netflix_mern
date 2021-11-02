@@ -17,9 +17,11 @@ const MovieSchema = new mongoose.Schema(
     },
     posterTitle: {
       type: String,
+      required: true,
     },
     posterSm: {
       type: String,
+      required: true,
     },
     trailer: {
       type: String,
@@ -46,7 +48,8 @@ const MovieSchema = new mongoose.Schema(
       required: true,
     },
     imdb: {
-      type: mongoose.SchemaTypes.Decimal128,
+      type: String,
+      required: true,
     },
     actors: [{ type: mongoose.Types.ObjectId, ref: "Actor" }],
     isSeries: {
