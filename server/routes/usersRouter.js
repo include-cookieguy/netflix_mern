@@ -2,6 +2,8 @@ const router = require('express').Router();
 const auth = require('../middleware/auth');
 const userCtrl = require('../controllers/userCtrl');
 
+router.get('/users', auth, userCtrl.getAllUsers);
+
 router.get('/user/get/:id', auth, userCtrl.getUser);
 
 router.patch('/user/update/username', auth, userCtrl.updateUsername);

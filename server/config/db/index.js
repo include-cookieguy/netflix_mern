@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 //Connect to database
 async function connect() {
   try {
-    await mongoose.connect('mongodb://localhost:27017/netflix_dev', {
+    await mongoose.connect('mongodb+srv://root:stickypass@cluster0.gtu8l.mongodb.net/netflix_dev', {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });

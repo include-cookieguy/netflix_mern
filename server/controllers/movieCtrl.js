@@ -1,6 +1,15 @@
 const Movie = require("../models/Movie");
 
 const movieCtrl = {
+  getAllMovie: async (req, res) => {
+    try {
+      let movies = await Movie.find()
+      res.status(200).json(movies)
+    } catch(err) {
+      return res.status(400).json({ msg: err.message }); 
+    }
+  },
+  
   createMovie: async (req, res) => {
     if (req.user.isAdmin) {
       try {
