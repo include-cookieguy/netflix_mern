@@ -1,5 +1,5 @@
 import { InfoOutlined } from "@material-ui/icons";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Category from "../category/Category";
 import { getDataAPI } from "../../utils/fetchData";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,8 +16,13 @@ const Featured = ({ type, listRandom }) => {
   const [pathName, setPathName] = useState("/");
   const [genreChange, setGenreChange] = useState("");
   const [listContainMovie, setListContainMovie] = useState([]);
+  const videoRef = useRef(null);
   const location = useLocation();
   const dispatch = useDispatch();
+
+  const toggleMuted = () => {
+    videoRef.current.muted = true;
+  };
 
   useEffect(() => {
     const getBigMovie = async () => {
@@ -57,7 +62,7 @@ const Featured = ({ type, listRandom }) => {
     if (feature === "image") {
       var featureTimeout = setTimeout(() => {
         setFeature("video");
-      }, 2500);
+      }, 3500);
     }
     if (pathName !== location.pathname || genreChange !== genre) {
       setFeature("image");
@@ -72,13 +77,52 @@ const Featured = ({ type, listRandom }) => {
     };
   }, [location.pathname, pathName, feature, dispatch, genre, genreChange]);
 
+  useEffect(() => {
+    if (feature === "video") {
+      let options = {
+        rootMargin: "0px",
+        threshold: [0.25, 0.75],
+      };
+
+      let handlePlay = (entries, observer) => {
+        entries.forEach((entry) => {
+          if (videoRef.current) {
+            if (entry.isIntersecting) {
+              videoRef.current.play();
+            } else {
+              videoRef.current.pause();
+            }
+          }
+        });
+      };
+
+      let observer = new IntersectionObserver(handlePlay, options);
+      observer.observe(videoRef.current);
+    }
+  }, [feature]);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      if (feature === "video" && infoModal) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+    }
+  }, [feature, infoModal]);
+
   return (
     <div className="featured">
       {type && <Category type={type} />}
       {feature === "image" ? (
         <img src={bigMovie.poster} alt="Movie background" className="poster" />
       ) : (
-        <video className="video" autoPlay controls src={bigMovie.trailer} />
+        <video
+          ref={videoRef}
+          className="video"
+          autoPlay
+          src={bigMovie.trailer}
+        />
       )}
       <div className={`info ${effectTitle && "effect"}`}>
         <img src={bigMovie.posterTitle} alt="Movie name" className="title" />

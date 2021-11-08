@@ -1,6 +1,5 @@
 .similar-movie {
   flex: 0 0 calc(100% / 3 - 10px);
-  margin-right: 10px;
   max-width: 240px;
   margin-bottom: 20px;
 
@@ -15,8 +14,8 @@
 
   .similar-movie-content {
     background-color: #2f2f2f;
-    padding: 15px 10px;
-    min-height: 17em;
+    padding: 10px 15px;
+    min-height: 16em;
     overflow: hidden;
     position: relative;
     border-bottom-left-radius: 5px;
@@ -26,16 +25,18 @@
     .similar-movie-addition {
       display: flex;
       align-items: center;
+      font-size: 1.4rem;
+
       .age-recommend {
         border: 1px solid rgba(255, 255, 255, 0.4);
-        margin-right: 12px;
-        padding: 0.2px 4px;
+        margin-right: 8px;
+        padding: 0.2px 2px;
       }
 
       .imdb {
         background-color: rgb(245 197 26);
         color: #000;
-        padding: 1px 5px;
+        padding: 1px 4px;
         border-radius: 3px;
       }
 
@@ -62,6 +63,11 @@
           }
         }
       }
+    }
+
+    .title-recommend-movie {
+      margin-top: 15px;
+      font-size: 2rem;
     }
 
     div {

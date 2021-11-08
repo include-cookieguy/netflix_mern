@@ -22,6 +22,7 @@ const Recommend = ({ movieCurrent, recommend }) => {
 
   return (
     <div className="menu-similar">
+      {!movieCurrent.isSeries && <div className="breaker"></div>}
       <h2>More Like This</h2>
       <div className="menu-similar-content">
         {recommendList.map((e, index) => (

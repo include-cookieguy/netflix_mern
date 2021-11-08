@@ -34,7 +34,7 @@ const RecommendItem = ({ movie }) => {
             </span>
           </div>
         </div>
-        <p style={{ marginTop: "15px", fontSize: "2rem" }}>{movie.title}</p>
+        <p className="title-recommend-movie">{movie.title}</p>
         <div>{movie.desc}</div>
       </div>
     </div>
