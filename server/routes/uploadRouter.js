@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const multer = require("multer");
 const format = require('format')
+const { v4 : uuidv4 } = require('uuid')
 const auth = require("../middleware/auth");
 const firebase = require("../config/firebase");
 
@@ -12,8 +13,8 @@ router.post("/image", upload.single("image"), (req, res) => {
   if (!req.file) {
     res.status(400).send("Error: No files found");
   }
-
-  const blob = firebase.bucket.file(`images/${req.file.originalname}`);
+  let idv4 = uuidv4()
+  const blob = firebase.bucket.file(`images/${idv4}`);
 
   const blobWriter = blob.createWriteStream({
     metadata: {
@@ -26,7 +27,7 @@ router.post("/image", upload.single("image"), (req, res) => {
   });
 
   blobWriter.on("finish", () => {
-    let publicUrl = `https://firebasestorage.googleapis.com/v0/b/${firebase.bucket.name}/o/${encodeURIComponent(blob.name)}`;
+    let publicUrl = `https://firebasestorage.googleapis.com/v0/b/${firebase.bucket.name}/o/${encodeURIComponent(blob.name)}?alt=media`;
     res.status(200).json({
       message: 'File uploaded!',
       url: publicUrl
@@ -40,8 +41,9 @@ router.post("/video", upload.single("video"), (req, res) => {
   if (!req.file) {
     res.status(400).send("Error: No files found");
   }
-  // return res.json(req.file)
-  const blob = firebase.bucket.file(`videos/${req.file.originalname}`);
+
+  let idv4 = uuidv4()
+  const blob = firebase.bucket.file(`videos/${idv4}`);
 
   const blobWriter = blob.createWriteStream({
     metadata: {
@@ -54,7 +56,7 @@ router.post("/video", upload.single("video"), (req, res) => {
   });
 
   blobWriter.on("finish", () => {
-    let publicUrl = `https://firebasestorage.googleapis.com/v0/b/${firebase.bucket.name}/o/${encodeURIComponent(blob.name)}`;
+    let publicUrl = `https://firebasestorage.googleapis.com/v0/b/${firebase.bucket.name}/o/${encodeURIComponent(blob.name)}?alt=media`;
     res.status(200).json({
       message: 'File uploaded!',
       url: publicUrl
