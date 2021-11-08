@@ -1,5 +1,4 @@
 import React, { useRef, useState } from "react";
-import SelectedItem from "../selected-item/SelectedItem";
 import SliderItem from "../slider-item/SliderItem";
 import SliderContext from "./context";
 
@@ -38,7 +37,7 @@ function Slider({ mainTitle, data, poster }) {
         <h2 className="slider-header">
           <a href={"/"}>
             <div>{mainTitle}</div>
-            <div className="see-more">Explore more</div>
+            {!poster && <div className="see-more">Explore more</div>}
             <div className="see-more-chevron">
               <i className="fas fa-chevron-right"></i>
             </div>

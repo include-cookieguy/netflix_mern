@@ -5,6 +5,7 @@ import "./infomodal.scss";
 import useVideo from "../../hooks/useVideo";
 import Recommend from "../recommend/Recommend";
 import useMyList from "../../hooks/useMyList";
+import Episode from "../episode/Episode";
 
 const InfoModal = ({ infoModal, setInfoModal, bigMovie, recommend }) => {
   const ref = useRef();
@@ -82,36 +83,47 @@ const InfoModal = ({ infoModal, setInfoModal, bigMovie, recommend }) => {
             </div>
           </div>
         </div>
-        <p className="modal-title">
-          About <b>{bigMovie.title}</b>
-        </p>
-        <div className="modal-about">
-          <div className="description">
-            <div className="about-info">
-              <span>
-                {bigMovie.imdb} <b className="imdb">IMDb</b>
-              </span>
-              <span>{bigMovie.year}</span>
-              <span className="borderd">{bigMovie.limitAge}+</span>
-              <span className="borderd">HD</span>
+        <div className="modal-movie">
+          <p className="modal-title">
+            About <b>{bigMovie.title}</b>
+          </p>
+          <div className="modal-about">
+            <div className="description">
+              <div className="about-info">
+                <span>
+                  {bigMovie.imdb} <b className="imdb">IMDb</b>
+                </span>
+                <span>{bigMovie.year}</span>
+                <span className="borderd">{bigMovie.limitAge}+</span>
+                <span className="borderd">HD</span>
+                {bigMovie.isSeries && (
+                  <span>
+                    {bigMovie.seasons.length > 1
+                      ? bigMovie.seasons.length + " Seasons"
+                      : bigMovie.seasons.length + " Season"}
+                  </span>
+                )}
+              </div>
+              <p className="descr">{bigMovie.desc}</p>
             </div>
-            <p className="descr">{bigMovie.desc}</p>
-          </div>
 
-          <div className="cast-genre">
-            <p style={{ color: "#777777" }}>
-              Cast:{" "}
-              <span style={{ color: "#fff" }}>
-                Robert Downey Jr., Chris Evans, Mark Ruffalo, Chris Hemsworth,
-                Scarlett Johansson, Paul Rudd, Benedict Cumberbatch, Tom Holland
-              </span>
-            </p>
-            <p style={{ color: "#777777" }}>
-              Genres: <span style={{ color: "#fff" }}>{bigMovie.genre}</span>
-            </p>
+            <div className="cast-genre">
+              <p style={{ color: "#777777" }}>
+                Cast:{" "}
+                <span style={{ color: "#fff" }}>
+                  Robert Downey Jr., Chris Evans, Mark Ruffalo, Chris Hemsworth,
+                  Scarlett Johansson, Paul Rudd, Benedict Cumberbatch, Tom
+                  Holland
+                </span>
+              </p>
+              <p style={{ color: "#777777" }}>
+                Genres: <span style={{ color: "#fff" }}>{bigMovie.genre}</span>
+              </p>
+            </div>
           </div>
+          {bigMovie.isSeries && <Episode movie={bigMovie} />}
+          <Recommend movieCurrent={bigMovie} recommend={recommend} />
         </div>
-        <Recommend movieCurrent={bigMovie} recommend={recommend} />
       </div>
     </div>
   );

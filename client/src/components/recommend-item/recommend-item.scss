@@ -16,7 +16,7 @@
   .similar-movie-content {
     background-color: #2f2f2f;
     padding: 15px 10px;
-    min-height: 12em;
+    min-height: 17em;
     overflow: hidden;
     position: relative;
     border-bottom-left-radius: 5px;
@@ -40,15 +40,26 @@
       }
 
       .recommend-mylist {
+        display: flex;
+        justify-content: space-between;
+        top: 10px;
         position: absolute;
-        right: 20px;
-        cursor: pointer;
-        border: 1px solid rgba(255, 255, 255, 0.4);
-        padding: 6px 9px;
-        border-radius: 50%;
+        right: 0;
 
-        &:hover {
-          border-color: #fff;
+        a {
+          color: #fff;
+        }
+
+        span {
+          cursor: pointer;
+          border: 1px solid rgba(255, 255, 255, 0.4);
+          padding: 6px 8px;
+          border-radius: 50%;
+          margin-right: 10px;
+
+          &:hover {
+            border-color: #fff;
+          }
         }
       }
     }
