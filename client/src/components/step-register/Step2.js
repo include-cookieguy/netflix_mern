@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { GLOBALTYPES } from "../../redux/actions/globalTypes";
 
@@ -96,6 +96,7 @@ const Step2 = () => {
   ];
   const history = useHistory();
   const dispatch = useDispatch();
+  const { alert } = useSelector((state) => state);
 
   const handleStep2 = () => {
     const res = planChoices.filter((c, index) => index === choice)[0];
@@ -105,7 +106,7 @@ const Step2 = () => {
     if (!res) {
       err.plan = "You haven't choose a plan yet.";
 
-      dispatch({ type: GLOBALTYPES.ALERT, payload: err.plan });
+      dispatch({ type: GLOBALTYPES.ALERT, payload: { plan: err.plan } });
     } else {
       dispatch({
         type: GLOBALTYPES.STEPTWO,
@@ -138,7 +139,6 @@ const Step2 = () => {
           </li>
         </ul>
       </div>
-
       <div className="plans">
         <div className="plans-header">
           <label htmlFor="plan-choice-1">
@@ -208,7 +208,8 @@ const Step2 = () => {
             <b> Standard</b>, and 1 with <b>Basic</b> and <b>Mobile</b>.
           </p>
         </div>
-
+        <br />
+        {alert.plan && <b className="error">{alert.plan}</b>}
         <button onClick={handleStep2}>Next</button>
       </div>
     </div>

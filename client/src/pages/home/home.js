@@ -8,13 +8,9 @@ import Navbar from "../../components/navbar/Navbar";
 import { getDataAPI } from "../../utils/fetchData";
 import "./home.scss";
 // import jwt_decode from "jwt-decode";
-import { useDispatch, useSelector } from "react-redux";
-import { GLOBALTYPES } from "../../redux/actions/globalTypes";
-import { useLocation } from "react-router";
-// import { GLOBALTYPES } from "../../redux/actions/globalTypes";
+import { useSelector } from "react-redux";
 
 const Home = ({ type }) => {
-  const dispatch = useDispatch();
   const [lists, setLists] = useState([]);
   const { auth, genre } = useSelector((state) => state);
 

@@ -66,7 +66,7 @@ const Step1 = ({ transEmail }) => {
             </span>
           </div>
         </div>
-        {alert.username && <small className="error">{alert.username}</small>}
+        {alert.username && <b className="error">{alert.username}</b>}
         <div className="input">
           <div className="input-field">
             <input type="email" value={email || ""} readOnly />
@@ -75,7 +75,6 @@ const Step1 = ({ transEmail }) => {
             </span>
           </div>
         </div>
-        {alert.email && <small className="error">{alert.email}</small>}
         <div className="input">
           <div className="input-field">
             <input
@@ -88,7 +87,6 @@ const Step1 = ({ transEmail }) => {
             </span>
           </div>
         </div>
-        {alert.password && <small className="error">{alert.password}</small>}
 
         <div className="birthday">
           <span>Birthday</span>
@@ -303,9 +301,9 @@ const Step1 = ({ transEmail }) => {
           </div>
         </div>
         {alert.birthday && (
-          <small className="error" style={{ marginBottom: "15px" }}>
+          <b className="error" style={{ marginBottom: "15px" }}>
             {alert.birthday}
-          </small>
+          </b>
         )}
         <div className="special-offers">
           <input type="checkbox" id="dont-send" />

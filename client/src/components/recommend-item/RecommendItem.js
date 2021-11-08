@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import useMyList from "../../hooks/useMyList";
 import "./recommend-item.scss";
 
@@ -15,20 +16,25 @@ const RecommendItem = ({ movie }) => {
             {movie.imdb} <b className="imdb">IMDB</b>
           </span>
 
-          <span
-            onClick={addMovieToFav}
-            title={save ? "Remove from My List" : "Add to My List"}
-            className="recommend-mylist"
-          >
+          <div className="recommend-mylist">
             <span>
+              <Link to={{ pathname: "/watch", state: { movie: movie } }}>
+                <i className="fas fa-play"></i>
+              </Link>
+            </span>
+            <span
+              onClick={addMovieToFav}
+              title={save ? "Remove from My List" : "Add to My List"}
+            >
               {save ? (
                 <i className="fas fa-check"></i>
               ) : (
                 <i className="fas fa-plus"></i>
               )}
             </span>
-          </span>
+          </div>
         </div>
+        <p style={{ marginTop: "15px", fontSize: "2rem" }}>{movie.title}</p>
         <div>{movie.desc}</div>
       </div>
     </div>

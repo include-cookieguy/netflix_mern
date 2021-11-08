@@ -1,19 +1,33 @@
+import Slider from "../../components/slider/Slider";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import FavouriteItem from "../../components/favourite-item/FavouriteItem";
 import Footer from "../../components/footer/Footer";
 import Navbar from "../../components/navbar/Navbar";
-import { getFav, removeAll } from "../../redux/actions/userAction";
+import { removeAll } from "../../redux/actions/userAction";
+import { getDataAPI } from "../../utils/fetchData";
 import "./mylist.scss";
 
 const MyList = () => {
   const [myList, setMyList] = useState([]);
+  const [listsForRecommend, setListsForRecommend] = useState([]);
   const dispatch = useDispatch();
   const { auth, user } = useSelector((state) => state);
 
   useEffect(() => {
-    setMyList(user.favouriteMovie);
-  }, [auth.token, user.favouriteMovie]);
+    const getRandomLists = async () => {
+      try {
+        const res = await getDataAPI(`lists`, auth.token);
+        setListsForRecommend(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getRandomLists();
+  }, [auth.token]);
+
+  useEffect(() => {
+    setMyList([{ result: user.favouriteMovie }]);
+  }, [user.favouriteMovie]);
 
   const deleteAllFav = () => {
     dispatch(removeAll(auth));
@@ -23,15 +37,14 @@ const MyList = () => {
     <div className="favourite-list">
       <Navbar />
       <div className="container-favouritelist">
-        <p>My List</p>
+        <p className="header-favourite">My List</p>
         <button onClick={deleteAllFav} className="delete-all">
-          <i className="fas fa-trash-alt"></i> Delete All
+          Delete All <i className="fas fa-trash-alt"></i>
         </button>
         <div className="movie-list">
-          {myList &&
-            myList.map((movie, index) => (
-              <FavouriteItem key={index} index={index} movie={movie} />
-            ))}
+          {myList.map((list, index) => (
+            <Slider data={list.result} poster={true} key={index} />
+          ))}
         </div>
       </div>
       <Footer />

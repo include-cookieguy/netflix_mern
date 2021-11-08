@@ -23,6 +23,9 @@ const MovieSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    posterCard: {
+      type: String,
+    },
     trailer: {
       type: String,
       required: true,
@@ -56,6 +59,14 @@ const MovieSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    seasons: [
+      {
+        seasonName: {
+          type: Number,
+        },
+        seasonContent: [{ type: Object }],
+      },
+    ],
   },
   {
     timestamps: true,

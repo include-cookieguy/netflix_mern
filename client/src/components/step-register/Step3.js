@@ -17,6 +17,7 @@ const Step3 = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const [cardInfo, setCardInfo] = useState(cardInfomation);
+  const { alert } = useSelector((state) => state);
 
   const handleStep3 = (e) => {
     e.preventDefault();
@@ -78,6 +79,7 @@ const Step3 = () => {
             </span>
           </div>
         </div>
+        {alert.firstName && <b className="error">{alert.firstName}</b>}
         <div className="input">
           <div className="input-field">
             <input
@@ -96,6 +98,7 @@ const Step3 = () => {
             </span>
           </div>
         </div>
+        {alert.lastName && <b className="error">{alert.lastName}</b>}
         <div className="input">
           <div className="input-field">
             <input
@@ -114,6 +117,7 @@ const Step3 = () => {
             </span>
           </div>
         </div>
+        {alert.cardNumber && <b className="error">{alert.cardNumber}</b>}
         <div className="input">
           <div className="input-field">
             <input
@@ -132,6 +136,7 @@ const Step3 = () => {
             </span>
           </div>
         </div>
+        {alert.expiredDate && <b className="error">{alert.expiredDate}</b>}
         <div className="input">
           <div className="input-field">
             <input
@@ -186,6 +191,7 @@ const Step3 = () => {
             </div>
           </div>
         </div>
+        {alert.securityCode && <b className="error">{alert.securityCode}</b>}
       </form>
 
       <div className="info-plan">
@@ -220,6 +226,11 @@ const Step3 = () => {
           <label htmlFor="agree">I agree.</label>
         </div>
       </div>
+      {alert.agree && (
+        <b className="error" style={{ marginTop: "4px" }}>
+          {alert.agree}
+        </b>
+      )}
 
       <button onClick={handleStep3}>Start Membership</button>
     </div>
