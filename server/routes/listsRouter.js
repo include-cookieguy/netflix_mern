@@ -2,9 +2,9 @@ const router = require('express').Router();
 const auth = require('../middleware/auth');
 const listCtrl = require('../controllers/listCtrl');
 
-router.get('/lists', auth, listCtrl.getList);
+router.get('/lists', listCtrl.getList);
 
-router.post('/lists', auth, listCtrl.createList);
+router.post('/lists', listCtrl.createList);
 
 router.patch('/lists/update/:id', auth, listCtrl.updateList);
 

@@ -2,7 +2,7 @@ const List = require("../models/List");
 
 const listCtrl = {
   createList: async (req, res) => {
-    if (req.user.isAdmin) {
+    //if (req.user.isAdmin) {
       try {
         const { title, type, genre, content } = req.body;
 
@@ -29,9 +29,9 @@ const listCtrl = {
       } catch (err) {
         return res.status(500).json({ msg: err.message });
       }
-    } else {
-      res.status(403).json("You are not allowed to create a list.");
-    }
+    //} else {
+    //  res.status(403).json("You are not allowed to create a list.");
+    //}
   },
 
   getList: async (req, res) => {

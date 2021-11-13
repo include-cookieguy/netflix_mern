@@ -164,6 +164,31 @@ const userCtrl = {
       return res.status(500).json({ msg: "You can delete only your account!" });
     }
   },
+
+  newUser: async (req, res) => {
+    try {
+      const { username, email, password, birthday, isAdmin } = req.body;
+
+      const user_email = await User.findOne({ email }); 
+      if (user_email) {
+        return res.status(400).json({ msg: 'This email is already registered. Please use another email.' })
+      }
+      const passwordHash = await bcrypt.hash(password, 12);
+
+      const newUser = new User({
+        username,
+        email,
+        password: passwordHash,
+        birthday,
+        isAdmin
+      });
+      await newUser.save();
+
+      res.json({ msg: "Create successfully!" });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
 };
 
 module.exports = userCtrl;

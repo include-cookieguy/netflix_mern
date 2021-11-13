@@ -120,7 +120,7 @@ const movieCtrl = {
   },
 
   updateMovie: async (req, res) => {
-    if (req.user.isAdmin) {
+    // if (req.user.isAdmin) {
       try {
         const {
           title,
@@ -158,9 +158,9 @@ const movieCtrl = {
       } catch (err) {
         return res.status(500).json({ msg: err.message });
       }
-    } else {
-      res.status(403).json("You are not allowed to update a movie.");
-    }
+    // } else {
+    //   res.status(403).json("You are not allowed to update a movie.");
+    // }
   },
 
   deleleMovie: async (req, res) => {

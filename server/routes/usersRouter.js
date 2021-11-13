@@ -2,7 +2,7 @@ const router = require('express').Router();
 const auth = require('../middleware/auth');
 const userCtrl = require('../controllers/userCtrl');
 
-router.get('/users', auth, userCtrl.getAllUsers);
+router.get('/users', userCtrl.getAllUsers);
 
 router.get('/user/get/:id', auth, userCtrl.getUser);
 
@@ -13,6 +13,8 @@ router.patch('/user/update/password', auth, userCtrl.updatePassword);
 router.patch('/user/update/avatar', auth, userCtrl.updateAvatar);
 
 router.get('/user/favlist', auth, userCtrl.getMovieFav);
+
+router.post('/newUser', userCtrl.newUser)
 
 router.post('/user/favlist/:id', auth, userCtrl.addMovieToFav);
 
