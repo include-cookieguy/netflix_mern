@@ -12,6 +12,8 @@ router.patch('/user/update/password', auth, userCtrl.updatePassword);
 
 router.patch('/user/update/avatar', auth, userCtrl.updateAvatar);
 
+router.put('/user/:id', userCtrl.updateUserById)
+
 router.get('/user/favlist', auth, userCtrl.getMovieFav);
 
 router.post('/newUser', userCtrl.newUser)
@@ -22,6 +24,6 @@ router.delete('/user/favlist/:id', auth, userCtrl.removeMovieFromFav);
 
 router.delete('/user/favlist', auth, userCtrl.removeAllMovieFromFav);
 
-router.delete('/user/delete/:id', auth, userCtrl.deleteAccount);
+router.delete('/user/delete/:id', userCtrl.deleteAccount);
 
 module.exports = router;
