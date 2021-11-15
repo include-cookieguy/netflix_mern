@@ -153,17 +153,72 @@ const userCtrl = {
   },
 
   deleteAccount: async (req, res) => {
-    if (req.user.id === req.params.id || req.user.isAdmin) {
+    // if (req.user.id === req.params.id || req.user.isAdmin) {
       try {
         await User.findByIdAndDelete(req.params.id);
         res.json({ msg: "This account has been deleted." });
       } catch (err) {
         return res.status(500).json({ msg: err.message });
       }
-    } else {
-      return res.status(500).json({ msg: "You can delete only your account!" });
+    // } else {
+    //   return res.status(500).json({ msg: "You can delete only your account!" });
+    // }
+  },
+
+  newUser: async (req, res) => {
+    try {
+      const { username, email, password, birthday, isAdmin } = req.body;
+
+      const user_email = await User.findOne({ email }); 
+      if (user_email) {
+        return res.status(400).json({ msg: 'This email is already registered. Please use another email.' })
+      }
+      const passwordHash = await bcrypt.hash(password, 12);
+
+      const newUser = new User({
+        username,
+        email,
+        password: passwordHash,
+        birthday,
+        isAdmin
+      });
+      await newUser.save();
+
+      res.json({ msg: "Create successfully!" });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
     }
   },
+
+  updateUserById: async (req, res) => {
+    let { _id, username, email, newPassword, profilePic, birthday, isAdmin } = req.body
+    try {
+      if (newPassword) {
+        newPassword = await bcrypt.hash(newPassword, 12);
+        await User.findByIdAndUpdate(_id, {
+          username,
+          email,
+          password: newPassword,
+          profilePic,
+          birthday,
+          isAdmin
+        })
+      } else {
+        await User.findByIdAndUpdate(_id, {
+          username,
+          email,
+          profilePic,
+          birthday,
+          isAdmin
+        })
+      }
+
+      return res.status(200).json({ msg: 'Update successfully!' })
+
+    } catch(err) {
+      return res.status(400).json({ msg: 'Edit user error!' })
+    }
+  }
 };
 
 module.exports = userCtrl;

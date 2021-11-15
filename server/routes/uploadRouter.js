@@ -13,7 +13,12 @@ router.post("/image", upload.single("image"), (req, res) => {
   if (!req.file) {
     res.status(400).send("Error: No files found");
   }
+<<<<<<< HEAD
   let idv4 = uuidv4();
+=======
+  let idv4 = uuidv4()
+  console.log('idv4', idv4)
+>>>>>>> 7fdcb3216b4e44245497a86637281451a4ca1715
   const blob = firebase.bucket.file(`images/${idv4}`);
 
   const blobWriter = blob.createWriteStream({
