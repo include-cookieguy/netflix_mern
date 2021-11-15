@@ -109,12 +109,7 @@ const InfoModal = ({ infoModal, setInfoModal, bigMovie, recommend }) => {
 
             <div className="cast-genre">
               <p style={{ color: "#777777" }}>
-                Cast:{" "}
-                <span style={{ color: "#fff" }}>
-                  Robert Downey Jr., Chris Evans, Mark Ruffalo, Chris Hemsworth,
-                  Scarlett Johansson, Paul Rudd, Benedict Cumberbatch, Tom
-                  Holland
-                </span>
+                Casts: <span style={{ color: "#fff" }}>{bigMovie.actors}</span>
               </p>
               <p style={{ color: "#777777" }}>
                 Genres: <span style={{ color: "#fff" }}>{bigMovie.genre}</span>

@@ -88,6 +88,16 @@ const listCtrl = {
     }
   },
 
+  getRecommendList: async (req, res) => {
+    try {
+      const recommendList = await List.find({ content: req.params.id });
+
+      res.json(recommendList);
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
   updateList: async (req, res) => {
     if (req.user.isAdmin) {
       try {

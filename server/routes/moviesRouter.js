@@ -10,6 +10,8 @@ router.get("/movie/random", auth, movieCtrl.getRandomMovie);
 
 router.post("/movie", auth, movieCtrl.createMovie);
 
+router.get("/movie/search", auth, movieCtrl.searchMovie);
+
 router.patch("/movie/update/:id", auth, movieCtrl.updateMovie);
 
 router.delete("/movie/delete/:id", auth, movieCtrl.deleleMovie);

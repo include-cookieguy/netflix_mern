@@ -163,6 +163,30 @@ const movieCtrl = {
     }
   },
 
+  searchMovie: async (req, res) => {
+    try {
+      if (req.query.searchString) {
+        const searchMovie = await Movie.find({
+          $or: [
+            {
+              $text: { $search: req.query.searchString },
+            },
+            {
+              title: { $regex: new RegExp(req.query.searchString, "i") },
+            },
+            {
+              actors: { $regex: new RegExp(req.query.searchString, "i") },
+            },
+          ],
+        }).limit(20);
+
+        res.json(searchMovie);
+      }
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
   deleleMovie: async (req, res) => {
     if (req.user.isAdmin) {
       try {

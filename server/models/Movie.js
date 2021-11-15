@@ -17,7 +17,6 @@ const MovieSchema = new mongoose.Schema(
     },
     posterTitle: {
       type: String,
-      required: true,
     },
     posterSm: {
       type: String,
@@ -54,7 +53,9 @@ const MovieSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    actors: [{ type: mongoose.Types.ObjectId, ref: "Actor" }],
+    actors: {
+      type: String,
+    },
     isSeries: {
       type: Boolean,
       default: false,
@@ -72,5 +73,9 @@ const MovieSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+MovieSchema.index({ title: "text", actors: "text" });
+MovieSchema.index({ title: 1 });
+MovieSchema.index({ actors: 1 });
 
 module.exports = mongoose.model("Movie", MovieSchema);

@@ -4,11 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { logout } from "../../redux/actions/authAction";
 import { GLOBALTYPES } from "../../redux/actions/globalTypes";
+import SearchBox from "../search-box/SearchBox";
 import "./navbar.scss";
 
 const Navbar = ({ bgColor, color, borderBottom }) => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const { auth } = useSelector((state) => state);
+  const { auth, search } = useSelector((state) => state);
   const dispatch = useDispatch();
   const path = [
     {
@@ -38,6 +39,7 @@ const Navbar = ({ bgColor, color, borderBottom }) => {
     },
   ];
   const [pathName, setPathName] = useState(path);
+  const [searchQuery, setSearchQuery] = useState("");
   const location = useLocation();
 
   useEffect(() => {
@@ -52,6 +54,8 @@ const Navbar = ({ bgColor, color, borderBottom }) => {
     setPathName(pageCurrent);
     dispatch({ type: GLOBALTYPES.GENRE, payload: "" });
     dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } });
+    dispatch({ type: GLOBALTYPES.GETSEARCH, payload: { data: [], query: "" } });
+    setSearchQuery("");
     const fakeLoading = setTimeout(() => {
       dispatch({
         type: GLOBALTYPES.ALERT,
@@ -59,7 +63,7 @@ const Navbar = ({ bgColor, color, borderBottom }) => {
           loading: false,
         },
       });
-    }, 1010);
+    }, 1500);
     return () => clearTimeout(fakeLoading);
   }, [location.pathname, dispatch]);
 
@@ -89,6 +93,13 @@ const Navbar = ({ bgColor, color, borderBottom }) => {
       {auth.token && (
         <div className="right">
           <Search className="icon" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Title, actors"
+          />
+          <SearchBox searchQuery={searchQuery} />
           <span>KID</span>
           <Notifications className="icon" />
           <img src={auth.user.profilePic} alt="Navbar avatar" />

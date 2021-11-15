@@ -9,10 +9,11 @@ import { getDataAPI } from "../../utils/fetchData";
 import "./home.scss";
 // import jwt_decode from "jwt-decode";
 import { useSelector } from "react-redux";
+import SearchList from "../../components/search-list/SearchList";
 
 const Home = ({ type }) => {
   const [lists, setLists] = useState([]);
-  const { auth, genre } = useSelector((state) => state);
+  const { auth, genre, search } = useSelector((state) => state);
 
   // const axiosJWT = axios.create();
   // axiosJWT.interceptors.request.use(
@@ -70,15 +71,21 @@ const Home = ({ type }) => {
   return (
     <div className="home">
       <Navbar />
-      <Featured type={type} listRandom={lists} />
-      {lists.map((list, index) => (
-        <Slider
-          mainTitle={list.title}
-          data={list.result}
-          poster={false}
-          key={index}
-        />
-      ))}
+      {!search.searchInput ? (
+        <React.Fragment>
+          <Featured type={type} listRandom={lists} />
+          {lists.map((list, index) => (
+            <Slider
+              mainTitle={list.title}
+              data={list.result}
+              poster={false}
+              key={index}
+            />
+          ))}
+        </React.Fragment>
+      ) : (
+        <SearchList />
+      )}
       <Footer />
     </div>
   );

@@ -33,7 +33,7 @@ const Category = ({ type }) => {
           loading: false,
         },
       });
-    }, 1310);
+    }, 1500);
     setShowDropDown(false);
   };
 
