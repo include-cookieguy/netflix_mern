@@ -1,34 +1,33 @@
+const { mongo } = require("mongoose");
 const List = require("../models/List");
 
 const listCtrl = {
   createList: async (req, res) => {
     //if (req.user.isAdmin) {
-      try {
-        const { title, type, genre, content } = req.body;
+    try {
+      const { title, type, genre, content } = req.body;
 
-        const title_movie = await List.findOne({ title });
-        if (title_movie) {
-          return res
-            .status(400)
-            .json({ msg: "This movie has already existed." });
-        }
-
-        const newList = new List({
-          title,
-          type,
-          genre,
-          content,
-        });
-
-        await newList.save();
-
-        res.json({
-          msg: "List of movies has been successfully created.",
-          movie: newList._doc,
-        });
-      } catch (err) {
-        return res.status(500).json({ msg: err.message });
+      const title_movie = await List.findOne({ title });
+      if (title_movie) {
+        return res.status(400).json({ msg: "This movie has already existed." });
       }
+
+      const newList = new List({
+        title,
+        type,
+        genre,
+        content,
+      });
+
+      await newList.save();
+
+      res.json({
+        msg: "List of movies has been successfully created.",
+        movie: newList._doc,
+      });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
     //} else {
     //  res.status(403).json("You are not allowed to create a list.");
     //}
@@ -90,7 +89,24 @@ const listCtrl = {
 
   getRecommendList: async (req, res) => {
     try {
-      const recommendList = await List.find({ content: req.params.id });
+      const transId = mongo.ObjectId(req.params.id);
+      const recommendList = await List.aggregate([
+        {
+          $lookup: {
+            from: "movies",
+            localField: "content",
+            foreignField: "_id",
+            as: "result",
+          },
+        },
+        { $match: { content: { $in: [transId] } } },
+        {
+          $project: {
+            result: 1,
+          },
+        },
+        { $sample: { size: 1 } },
+      ]);
 
       res.json(recommendList);
     } catch (err) {

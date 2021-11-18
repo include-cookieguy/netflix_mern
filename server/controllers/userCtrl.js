@@ -5,10 +5,10 @@ const Movie = require("../models/Movie");
 const userCtrl = {
   getAllUsers: async (req, res) => {
     try {
-      const users = await User.find({})
-      res.status(200).json(users)
+      const users = await User.find({});
+      res.status(200).json(users);
     } catch (err) {
-      res.status(400).json({ message: 'Get users error' })
+      res.status(400).json({ message: "Get users error" });
     }
   },
 
@@ -152,26 +152,100 @@ const userCtrl = {
     }
   },
 
+  getPausedAtList: async (req, res) => {
+    try {
+      const getPauses = await User.findById(req.user.id, { watchAgain: 1 });
+
+      if (getPauses) {
+        res.json(getPauses.watchAgain);
+      } else {
+        res.json({ msg: "You haven't watched any movies" });
+      }
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
+  createPausedAt: async (req, res) => {
+    try {
+      const result = await User.findByIdAndUpdate(req.user.id, {
+        $push: {
+          watchAgain: req.body,
+        },
+      });
+
+      res.json(result);
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
+  setPausedAt: async (req, res) => {
+    try {
+      const abc = await User.findOneAndUpdate(
+        {
+          _id: req.user.id,
+          "watchAgain.title": req.body.title,
+        },
+        {
+          $set: { "watchAgain.$": req.body },
+        }
+      );
+
+      res.json({
+        msg: "Set paused done!",
+      });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
+  expirePausedAt: async (req, res) => {
+    try {
+      const deleteWatchAgain = await User.findById(req.user.id, {
+        watchAgain: 1,
+      });
+
+      const result = deleteWatchAgain.watchAgain.filter(
+        (e) => e._id !== req.params.id
+      );
+
+      await User.findByIdAndUpdate(req.user.id, {
+        $set: {
+          watchAgain: result,
+        },
+      });
+
+      res.json({
+        msg: "Delete paused done!",
+      });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
   deleteAccount: async (req, res) => {
-    // if (req.user.id === req.params.id || req.user.isAdmin) {
+    if (req.user.id === req.params.id || req.user.isAdmin) {
       try {
         await User.findByIdAndDelete(req.params.id);
         res.json({ msg: "This account has been deleted." });
       } catch (err) {
         return res.status(500).json({ msg: err.message });
       }
-    // } else {
-    //   return res.status(500).json({ msg: "You can delete only your account!" });
-    // }
+    } else {
+      return res.status(500).json({ msg: "You can delete only your account!" });
+    }
   },
 
   newUser: async (req, res) => {
     try {
       const { username, email, password, birthday, isAdmin } = req.body;
 
-      const user_email = await User.findOne({ email }); 
+      const user_email = await User.findOne({ email });
       if (user_email) {
-        return res.status(400).json({ msg: 'This email is already registered. Please use another email.' })
+        return res.status(400).json({
+          msg: "This email is already registered. Please use another email.",
+        });
       }
       const passwordHash = await bcrypt.hash(password, 12);
 
@@ -180,7 +254,7 @@ const userCtrl = {
         email,
         password: passwordHash,
         birthday,
-        isAdmin
+        isAdmin,
       });
       await newUser.save();
 
@@ -191,7 +265,8 @@ const userCtrl = {
   },
 
   updateUserById: async (req, res) => {
-    let { _id, username, email, newPassword, profilePic, birthday, isAdmin } = req.body
+    let { _id, username, email, newPassword, profilePic, birthday, isAdmin } =
+      req.body;
     try {
       if (newPassword) {
         newPassword = await bcrypt.hash(newPassword, 12);
@@ -201,24 +276,23 @@ const userCtrl = {
           password: newPassword,
           profilePic,
           birthday,
-          isAdmin
-        })
+          isAdmin,
+        });
       } else {
         await User.findByIdAndUpdate(_id, {
           username,
           email,
           profilePic,
           birthday,
-          isAdmin
-        })
+          isAdmin,
+        });
       }
 
-      return res.status(200).json({ msg: 'Update successfully!' })
-
-    } catch(err) {
-      return res.status(400).json({ msg: 'Edit user error!' })
+      return res.status(200).json({ msg: "Update successfully!" });
+    } catch (err) {
+      return res.status(400).json({ msg: "Edit user error!" });
     }
-  }
+  },
 };
 
 module.exports = userCtrl;

@@ -5,7 +5,7 @@ import { GLOBALTYPES } from "../../redux/actions/globalTypes";
 
 const SearchBox = ({ searchQuery }) => {
   const [resultSearch, setResultSearch] = useState([]);
-  const { auth } = useSelector((state) => state);
+  const { auth, search } = useSelector((state) => state);
   const debounceSearch = useRef(null);
   const dispatch = useDispatch();
 
@@ -15,20 +15,39 @@ const SearchBox = ({ searchQuery }) => {
     }
 
     debounceSearch.current = setTimeout(() => {
+      const startTime = Date.now();
       const getSearch = async () => {
         try {
-          const res = await getDataAPI(
-            `movie/search${
-              searchQuery ? "?searchString=" + searchQuery : "?searchString=''"
-            }`,
-            auth.token
-          );
+          if (searchQuery) {
+            const res = await getDataAPI(
+              `movie/search${
+                searchQuery
+                  ? "?searchString=" + searchQuery
+                  : "?searchString=''"
+              }`,
+              auth.token
+            );
 
-          setResultSearch(res.data);
-          dispatch({
-            type: GLOBALTYPES.GETSEARCH,
-            payload: { data: res.data, query: searchQuery },
-          });
+            const timeQuery = Date.now() - startTime;
+
+            setResultSearch(res.data);
+
+            dispatch({
+              type: GLOBALTYPES.GETSEARCH,
+              payload: {
+                data: res.data,
+                query: searchQuery,
+                timeQuery: timeQuery,
+              },
+            });
+          } else {
+            dispatch({
+              type: GLOBALTYPES.GETSEARCH,
+              payload: {
+                query: "",
+              },
+            });
+          }
         } catch (err) {
           console.log(err);
         }

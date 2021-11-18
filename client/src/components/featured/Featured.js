@@ -15,7 +15,6 @@ const Featured = ({ type, listRandom }) => {
   const { auth, genre } = useSelector((state) => state);
   const [pathName, setPathName] = useState("/");
   const [genreChange, setGenreChange] = useState("");
-  const [listContainMovie, setListContainMovie] = useState([]);
   const videoRef = useRef(null);
   const location = useLocation();
   const dispatch = useDispatch();
@@ -42,18 +41,6 @@ const Featured = ({ type, listRandom }) => {
     };
     getBigMovie();
   }, [auth.token, type, genre]);
-
-  useEffect(() => {
-    const listContain = listRandom.filter((e) => {
-      let found;
-      if (e.content.includes(bigMovie._id)) {
-        found = e;
-      }
-      return found;
-    })[0];
-
-    if (listContain) setListContainMovie(listContain.result);
-  }, [bigMovie, listRandom]);
 
   useEffect(() => {
     const effectTimeout = setTimeout(() => {
@@ -143,7 +130,6 @@ const Featured = ({ type, listRandom }) => {
               infoModal={infoModal}
               setInfoModal={setInfoModal}
               bigMovie={bigMovie}
-              recommend={listContainMovie}
             />
           )}
         </div>

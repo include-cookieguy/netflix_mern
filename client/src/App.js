@@ -11,7 +11,8 @@ import { refreshToken } from "./redux/actions/authAction";
 import React, { useEffect } from "react";
 import Watch from "./pages/watch/Watch";
 import MyList from "./pages/mylist/MyList";
-import { getFav } from "./redux/actions/userAction";
+import WatchAgain from "./pages/watch-again/WatchAgain";
+import { getFav, getWatchAgain } from "./redux/actions/userAction";
 
 const App = () => {
   const { auth } = useSelector((state) => state);
@@ -24,6 +25,7 @@ const App = () => {
   useEffect(() => {
     if (auth.token) {
       dispatch(getFav(auth));
+      dispatch(getWatchAgain(auth));
     }
   }, [auth, dispatch]);
 
@@ -47,6 +49,11 @@ const App = () => {
         {auth.token && (
           <Route exact path="/watch">
             <Watch />
+          </Route>
+        )}
+        {auth.token && (
+          <Route exact path="/again">
+            <WatchAgain />
           </Route>
         )}
         {auth.token && (

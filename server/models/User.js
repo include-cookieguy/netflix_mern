@@ -34,6 +34,7 @@ const UserSchema = new mongoose.Schema(
       },
     },
     favouriteMovie: [{ type: mongoose.Types.ObjectId, ref: "Movie" }],
+    watchAgain: [{ type: Object }],
     isAdmin: {
       type: Boolean,
       default: false,

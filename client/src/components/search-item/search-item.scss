@@ -1,6 +1,7 @@
 .hover-search-item {
   transition: transform 0.3s;
   cursor: pointer;
+
   .boxart-item {
     padding: 12% 0;
     img {
@@ -28,6 +29,8 @@
   &:hover {
     transition: transform 0.2s;
     transform: scale(1.4);
+    position: relative;
+    z-index: 6;
 
     .show-details {
       opacity: 1;

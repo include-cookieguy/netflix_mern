@@ -21,10 +21,14 @@ const SearchItem = ({ movie, getMovie, setShowModal }) => {
       onMouseEnter={() => setShowOverlay(true)}
     >
       <div className="boxart-item">
-        {typeMedia === "image" ? (
-          <img src={movie.posterSm} alt="boxart" />
+        {movie.poster ? (
+          typeMedia === "image" ? (
+            <img src={movie.posterSm} alt="boxart" />
+          ) : (
+            <video className="video" autoPlay src={movie.trailer} />
+          )
         ) : (
-          <video className="video" autoPlay src={movie.trailer} />
+          <img style={{ background: "black" }} alt="boxart" />
         )}
       </div>
 

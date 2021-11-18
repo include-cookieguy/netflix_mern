@@ -54,7 +54,13 @@ const Navbar = ({ bgColor, color, borderBottom }) => {
     setPathName(pageCurrent);
     dispatch({ type: GLOBALTYPES.GENRE, payload: "" });
     dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } });
-    dispatch({ type: GLOBALTYPES.GETSEARCH, payload: { data: [], query: "" } });
+    if (search.searchInput) {
+      dispatch({
+        type: GLOBALTYPES.GETSEARCH,
+        payload: { data: [], query: "" },
+      });
+    }
+    window.scrollTo(0, 0);
     setSearchQuery("");
     const fakeLoading = setTimeout(() => {
       dispatch({
@@ -63,9 +69,9 @@ const Navbar = ({ bgColor, color, borderBottom }) => {
           loading: false,
         },
       });
-    }, 1500);
+    }, 800);
     return () => clearTimeout(fakeLoading);
-  }, [location.pathname, dispatch]);
+  }, [location.pathname, dispatch, search.searchQuery]);
 
   return (
     <div
@@ -92,14 +98,19 @@ const Navbar = ({ bgColor, color, borderBottom }) => {
       </div>
       {auth.token && (
         <div className="right">
-          <Search className="icon" />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Title, actors"
-          />
-          <SearchBox searchQuery={searchQuery} />
+          {["/", "/series", "/movies"].includes(location.pathname) && (
+            <div className="search">
+              <Search className="icon-search" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Titles, actors"
+                className="search-box"
+              />
+              <SearchBox searchQuery={searchQuery} />
+            </div>
+          )}
           <span>KID</span>
           <Notifications className="icon" />
           <img src={auth.user.profilePic} alt="Navbar avatar" />

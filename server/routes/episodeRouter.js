@@ -2,7 +2,7 @@ const router = require("express").Router();
 const auth = require("../middleware/auth");
 const episodeCtrl = require("../controllers/episodeCtrl");
 
-router.get("/episode", auth, episodeCtrl.getAllEpisode);
+router.get("/episodes", auth, episodeCtrl.getAllEpisode);
 
 router.get("/episode/get/:id", auth, episodeCtrl.getEpisode);
 

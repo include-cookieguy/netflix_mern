@@ -2,6 +2,7 @@ import { GLOBALTYPES } from "../actions/globalTypes";
 
 const initialState = {
   favouriteMovie: [],
+  watchAgain: [],
 };
 
 const userReducer = (state = initialState, action) => {
@@ -28,6 +29,32 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         favouriteMovie: [],
+      };
+
+    case GLOBALTYPES.GETWATCHAGAIN:
+      return {
+        ...state,
+        watchAgain: action.payload,
+      };
+
+    case GLOBALTYPES.WATCHAGAIN:
+      return {
+        ...state,
+        watchAgain: [...state.watchAgain, action.payload],
+      };
+
+    case GLOBALTYPES.SETWATCHAGAIN:
+      return {
+        ...state,
+        watchAgain: state.watchAgain.map((e) =>
+          e._id !== action.payload._id ? e : action.payload
+        ),
+      };
+
+    case GLOBALTYPES.REMOVEWATCHAGAIN:
+      return {
+        ...state,
+        watchAgain: state.watchAgain.filter((e) => e._id !== action.payload),
       };
     default:
       return state;

@@ -37,7 +37,24 @@ const MyList = () => {
     <div className="favourite-list">
       <Navbar />
       <div className="container-favouritelist">
-        <p className="header-favourite">My List</p>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            padding: "100px 60px 0px 60px",
+          }}
+        >
+          <span
+            style={{
+              fontSize: "2rem",
+              fontWeight: "300",
+              marginRight: "10px",
+            }}
+          >
+            User &gt;
+          </span>{" "}
+          <h1 className="header-favourite">My List</h1>
+        </div>
         <button onClick={deleteAllFav} className="delete-all">
           Delete All <i className="fas fa-trash-alt"></i>
         </button>

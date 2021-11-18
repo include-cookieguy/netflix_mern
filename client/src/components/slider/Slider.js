@@ -6,8 +6,9 @@ import useWindowWidth from "../../hooks/useWindowWidth";
 import useSlider from "../../hooks/useSlider";
 import "./slider.scss";
 import InfoModal from "../infomodal/InfoModal";
+import { useLocation } from "react-router";
 
-function Slider({ mainTitle, data, poster }) {
+function Slider({ mainTitle, data, poster, watchAgain }) {
   const width = useWindowWidth();
   const ref = useRef(null);
   const [showModal, setShowModal] = useState(false);
@@ -30,6 +31,8 @@ function Slider({ mainTitle, data, poster }) {
   const contextValue = {
     currentSlide,
   };
+
+  const location = useLocation();
 
   return (
     <SliderContext.Provider value={contextValue}>
@@ -124,7 +127,6 @@ function Slider({ mainTitle, data, poster }) {
           infoModal={showModal}
           setInfoModal={setShowModal}
           bigMovie={movieModal}
-          recommend={content}
         />
       )}
     </SliderContext.Provider>

@@ -3,6 +3,7 @@ import { GLOBALTYPES } from "../actions/globalTypes";
 const initialState = {
   searchList: [],
   searchInput: "",
+  timeQuery: null,
 };
 
 const searchReducer = (state = initialState, action) => {
@@ -12,6 +13,7 @@ const searchReducer = (state = initialState, action) => {
         ...state,
         searchList: action.payload.data,
         searchInput: action.payload.query,
+        timeQuery: action.payload.timeQuery,
       };
     default:
       return state;

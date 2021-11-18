@@ -24,6 +24,7 @@ const MovieSchema = new mongoose.Schema(
     },
     posterCard: {
       type: String,
+      required: true,
     },
     trailer: {
       type: String,

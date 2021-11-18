@@ -20,6 +20,7 @@ const movieCtrl = {
           poster,
           posterTitle,
           posterSm,
+          posterCard,
           trailer,
           video,
           country,
@@ -43,6 +44,7 @@ const movieCtrl = {
           poster,
           posterTitle,
           posterSm,
+          posterCard,
           trailer,
           video,
           country,
@@ -121,43 +123,45 @@ const movieCtrl = {
 
   updateMovie: async (req, res) => {
     // if (req.user.isAdmin) {
-      try {
-        const {
-          title,
-          desc,
-          poster,
-          posterTitle,
-          posterSm,
-          trailer,
-          video,
-          year,
-          country,
-          limitAge,
-          genre,
-          imdb,
-          isSeries,
-        } = req.body;
+    try {
+      const {
+        title,
+        desc,
+        poster,
+        posterTitle,
+        posterSm,
+        posterCard,
+        trailer,
+        video,
+        year,
+        country,
+        limitAge,
+        genre,
+        imdb,
+        isSeries,
+      } = req.body;
 
-        await Movie.findByIdAndUpdate(req.params.id, {
-          title,
-          desc,
-          poster,
-          posterTitle,
-          posterSm,
-          trailer,
-          video,
-          country,
-          year,
-          limitAge,
-          genre,
-          imdb,
-          isSeries,
-        });
+      await Movie.findByIdAndUpdate(req.params.id, {
+        title,
+        desc,
+        poster,
+        posterTitle,
+        posterSm,
+        posterCard,
+        trailer,
+        video,
+        country,
+        year,
+        limitAge,
+        genre,
+        imdb,
+        isSeries,
+      });
 
-        res.json({ msg: "Movie has been successfully updated." });
-      } catch (err) {
-        return res.status(500).json({ msg: err.message });
-      }
+      res.json({ msg: "Movie has been successfully updated." });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
     // } else {
     //   res.status(403).json("You are not allowed to update a movie.");
     // }
