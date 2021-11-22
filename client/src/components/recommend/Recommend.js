@@ -13,9 +13,9 @@ const Recommend = ({ movieCurrent }) => {
 
         const recommend = res.data[0].result;
 
-        const filterRecommend = recommend.filter(
-          (e) => e._id !== movieCurrent._id
-        );
+        const filterRecommend = recommend
+          .filter((e) => e._id !== movieCurrent._id)
+          .slice(0, 9);
 
         // suffle array
         for (let i = filterRecommend.length - 1; i > 0; i--) {
