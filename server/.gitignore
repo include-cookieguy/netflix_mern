@@ -1,0 +1,5 @@
+# dependencies
+node_modules
+config/firebaseAuth.json
+.env
+package-lock.json
