@@ -22,6 +22,8 @@ app.use("/api", require("./routes/moviesRouter"));
 app.use("/api", require("./routes/listsRouter"));
 app.use("/api", require("./routes/episodeRouter"));
 
+app.get("/ping", (_, res) => res.json('Hello World'))
+
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
