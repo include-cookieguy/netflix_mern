@@ -1,0 +1,56 @@
+.hover-search-item {
+  transition: transform 0.3s;
+  cursor: pointer;
+
+  .boxart-item {
+    padding: 12% 0;
+    img {
+      width: 100%;
+      border-radius: 2px;
+      object-fit: cover;
+      height: 130px;
+    }
+
+    video {
+      width: 100%;
+      height: 130px;
+      object-fit: cover;
+      position: relative;
+      top: 0px;
+      border-radius: 4px;
+    }
+  }
+
+  .info-movie {
+    display: none;
+    position: absolute;
+  }
+
+  &:hover {
+    transition: transform 0.2s;
+    transform: scale(1.4);
+    position: relative;
+    z-index: 6;
+
+    .show-details {
+      opacity: 1;
+      position: absolute;
+      bottom: 30px;
+      animation: chevronSlideDown 0.8s;
+    }
+
+    .info-movie {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0px 10px;
+      top: 80px;
+
+      .item-actions {
+        position: relative;
+        bottom: -20px;
+        right: -20px;
+      }
+    }
+  }
+}

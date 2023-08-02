@@ -1,0 +1,83 @@
+.notfound {
+  height: 100vh;
+  background-image: url('https://assets.nflxext.com/ffe/siteui/pages/errors/bg-lost-in-space.png');
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  .header {
+    background: var(--main-bg-color);
+    img {
+      max-height: 25px;
+      margin: 20px;
+      cursor: pointer;
+    }
+  }
+  .container {
+    position: absolute;
+    top: 30%;
+    left: 25%;
+    .content {
+      background: radial-gradient(
+        ellipse at center,
+        rgba(0, 0, 0, 0.5) 15%,
+        rgba(0, 0, 0, 0.2) 55%,
+        rgba(0, 0, 0, 0.1) 65%,
+        rgba(0, 0, 0, 0) 80%
+      );
+      color: var(--main-color);
+      max-width: 700px;
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      align-items: center;
+      justify-content: center;
+      margin: auto;
+
+      h2 {
+        font-size: 6rem;
+        text-shadow: 0 1px 2px rgb(0 0 0 / 57%);
+        margin-bottom: 20px;
+      }
+
+      span {
+        font-size: 2.3rem;
+        text-shadow: 0 1px 2px rgb(0 0 0 / 57%);
+        margin: 20px 0px;
+      }
+
+      button {
+        background-color: var(--main-color);
+        color: var(--main-bg-color);
+        border: none;
+        outline: none;
+        font-size: 1.6rem;
+        font-weight: 500;
+        border-radius: 5px;
+        padding: 10px 22px;
+
+        &:hover {
+          cursor: pointer;
+          background-color: rgba(255, 255, 255, 0.6);
+        }
+      }
+
+      .error-code {
+        font-size: 2.8rem;
+        font-weight: 100;
+        border-left: 2px solid var(--second-bg-color);
+        padding: 0px 13px;
+      }
+    }
+  }
+  .lost {
+    position: absolute;
+    bottom: 30px;
+    right: 50px;
+    color: rgba(229, 229, 229, 0.57);
+    text-shadow: 0 1px 2px rgb(0 0 0 / 57%);
+    font-size: 1.4em;
+    font-weight: 100;
+  }
+}
