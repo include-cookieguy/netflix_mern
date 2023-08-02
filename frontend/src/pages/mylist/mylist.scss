@@ -1,0 +1,29 @@
+.favourite-list {
+  background-color: var(--main-bg-color);
+  color: var(--main-color);
+  min-height: 100vh;
+
+  .container-favouritelist {
+    position: relative;
+    min-height: calc(100vh - 70px - 256px);
+
+    .header-favourite {
+      font-size: 3.8rem;
+    }
+
+    .delete-all {
+      position: absolute;
+      top: 160px;
+      right: 70px;
+      background-color: #000;
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      color: rgba(255, 255, 255, 0.9);
+      padding: 5px 10px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+    }
+  }
+}
