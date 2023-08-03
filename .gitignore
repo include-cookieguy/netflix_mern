@@ -1,5 +1,5 @@
 backend/node_modules
-client/node_modules
+frontend/node_modules
 .env
-client/package-lock.json
+frontend/package-lock.json
 backend/package-lock.json
