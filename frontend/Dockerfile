@@ -15,6 +15,7 @@ ENV REACT_APP_BACKEND_URL=$REACT_APP_BACKEND_URL
 # Stage 2
 FROM nginx:1.17.0-alpine
 
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build-stage /app/build /usr/share/nginx/html
 
-CMD nginx -g 'daemon off;'
+CMD ["nginx", "-g", "daemon off;"]
