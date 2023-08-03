@@ -18,14 +18,14 @@ const App = () => {
   const { auth } = useSelector((state) => state);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(refreshToken());
-  }, [dispatch]);
 
   useEffect(() => {
     if (auth.token) {
       dispatch(getFav(auth));
       dispatch(getWatchAgain(auth));
+    } else {
+      auth.token = localStorage.getItem("access_token");
+      auth.user = JSON.parse(localStorage.getItem("user"));
     }
   }, [auth, dispatch]);
 

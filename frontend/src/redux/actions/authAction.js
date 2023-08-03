@@ -14,7 +14,8 @@ export const login = (data) => async (dispatch) => {
         },
       });
 
-      localStorage.setItem("firstLogin", true);
+      localStorage.setItem("access_token", res.data.access_token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
 
       dispatch({
         type: GLOBALTYPES.ALERT,
@@ -74,7 +75,8 @@ export const register = (data) => async (dispatch) => {
         },
       });
 
-      localStorage.setItem("firstLogin", true);
+      localStorage.setItem("access_token", res.data.access_token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
       dispatch({
         type: GLOBALTYPES.ALERT,
         payload: {
@@ -118,7 +120,8 @@ export const registerEmail = (email) => async (dispatch) => {
 
 export const logout = () => async (dispatch) => {
   try {
-    localStorage.removeItem("firstLogin");
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("user");
     await postDataAPI("logout");
     window.location.href = "/";
   } catch (err) {

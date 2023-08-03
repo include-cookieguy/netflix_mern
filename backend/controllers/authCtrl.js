@@ -26,11 +26,6 @@ const authCtrl = {
         isAdmin: newUser.isAdmin,
       });
 
-      res.cookie("refreshtoken", refresh_token, {
-        httpOnly: true,
-        path: "/api/refresh_token",
-        maxAge: 30 * 24 * 60 * 60 * 1000, // 30days
-      });
 
       await newUser.save();
 
@@ -96,11 +91,6 @@ const authCtrl = {
         isAdmin: user.isAdmin,
       });
 
-      res.cookie("refreshtoken", refresh_token, {
-        httpOnly: true,
-        path: "/api/refresh_token",
-        maxAge: 30 * 24 * 60 * 60 * 1000, // 30days
-      });
 
       res.json({
         msg: "Login successully!",
