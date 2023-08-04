@@ -7,7 +7,6 @@ import Submit from "./pages/submit/Submit";
 import Alert from "./components/alert/Alert";
 import "./app.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { refreshToken } from "./redux/actions/authAction";
 import React, { useEffect } from "react";
 import Watch from "./pages/watch/Watch";
 import MyList from "./pages/mylist/MyList";
@@ -23,9 +22,12 @@ const App = () => {
     if (auth.token) {
       dispatch(getFav(auth));
       dispatch(getWatchAgain(auth));
+      console.log('ccc');
     } else {
       auth.token = localStorage.getItem("access_token");
       auth.user = JSON.parse(localStorage.getItem("user"));
+      dispatch(getFav(auth));
+      dispatch(getWatchAgain(auth));
     }
   }, [auth, dispatch]);
 
@@ -38,7 +40,7 @@ const App = () => {
         <Route exact path="/submit" component={Submit} />
         {auth.token && (
           <Route exact path="/movies">
-            <Home type="movie" />
+            <Home type="movies" />
           </Route>
         )}
         {auth.token && (

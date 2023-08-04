@@ -74,6 +74,60 @@
   overflow-x: visible;
 }
 
+.top-10 {
+  margin: 80px 50px 30px 50px;
+  .wrapper {
+    display: flex;
+    margin-top: 12px;
+    flex-direction: row;
+    align-items: center;
+    transform-style: preserve-3d;
+  }
+
+  .item {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    transform-style: preserve-3d;
+    transform: rotateY(-0.01deg);
+
+    &:first-child div {
+      -webkit-text-stroke-color: white;
+      color: red;
+    }
+
+    &:nth-child(2) div {
+      -webkit-text-stroke-color: red;
+      color: white;
+    }
+
+    &:nth-child(3) div {
+      -webkit-text-stroke-color: red;
+      color: black;
+    }
+  }
+
+  .item div {
+    font-weight: bold;
+    font-size: 200px;
+    line-height: 1;
+    margin-bottom: -14px;
+    color: black;
+    -webkit-text-stroke: 6px white;
+    text-shadow: 0 0 30px black;
+    position: absolute;
+    left: -12px;
+  }
+
+  .item img {
+    margin: 4px 0 4px 60px;
+    border-radius: 4px;
+    box-shadow: 0px 0px 32px black;
+    width: 230px;
+    height: 330px;
+  }
+}
+
 .slider .sliderMask {
   overflow-x: hidden;
   padding-bottom: 1px;

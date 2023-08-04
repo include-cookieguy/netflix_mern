@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { GLOBALTYPES } from "../../redux/actions/globalTypes";
 import "./category.scss";
 
@@ -21,7 +21,8 @@ const Category = ({ type }) => {
     "Thriller",
     "Western",
   ];
-  const [genre, setGenre] = useState("Genres");
+  const [genreLocal, setGenre] = useState("Genres");
+  const { genre } = useSelector((state) => state);
 
   const handleGenre = (e) => {
     dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } });
@@ -38,28 +39,33 @@ const Category = ({ type }) => {
   };
 
   useEffect(() => {
-    setGenre("Genres");
-  }, [type]);
+    setGenre('Genres');
+    dispatch({ type: GLOBALTYPES.GENRE, payload: '' });
+  }, [type])
 
   useEffect(() => {
-    if (genre !== "Genres") {
-      dispatch({ type: GLOBALTYPES.GENRE, payload: genre });
-    } else {
-      dispatch({ type: GLOBALTYPES.GENRE, payload: "" });
+    if (genreLocal !== "Genres") {
+      dispatch({ type: GLOBALTYPES.GENRE, payload: genreLocal });
     }
-  }, [genre, dispatch]);
+  }, [genreLocal, dispatch]);
+
+  useEffect(() => {
+    if (genre) {
+      setGenre(genre);
+    }
+  }, [genre])
 
   return (
     <div className="category">
       <span className="title-cate">
-        {type === "movie" ? "Movies" : "Series"}
+        {type === "movies" ? "Movies" : "Series"}
       </span>
       <div className="button-dropdown">
         <button
           className={`dropdown-toggle ${showDropDown && "rotate"}`}
           onClick={() => setShowDropDown(!showDropDown)}
         >
-          {genre}
+          {genreLocal}
         </button>
 
         {showDropDown && (

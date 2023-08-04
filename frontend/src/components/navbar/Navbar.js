@@ -51,7 +51,7 @@ const Navbar = ({ bgColor, color, borderBottom }) => {
       return e;
     });
     setPathName(pageCurrent);
-    dispatch({ type: GLOBALTYPES.GENRE, payload: "" });
+    // dispatch({ type: GLOBALTYPES.GENRE, payload: "" });
     dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } });
     if (search.searchInput) {
       dispatch({

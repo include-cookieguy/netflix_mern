@@ -62,7 +62,6 @@ const Footer = ({ bgColor }) => {
           </ul>
         </div>
         <select className='language' style={{ backgroundColor: bgColor }}>
-          <option value='Vietnamese'>Vietnamese</option>
           <option value='English'>English</option>
         </select>
       </div>

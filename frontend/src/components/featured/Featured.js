@@ -10,6 +10,7 @@ import "./featured.scss";
 const Featured = ({ type, listRandom }) => {
   const [bigMovie, setBigMovie] = useState({});
   const [infoModal, setInfoModal] = useState(false);
+  const [muted, setMuted] = useState(true);
   const [effectTitle, setEffectTitle] = useState(false);
   const [feature, setFeature] = useState("image");
   const { auth, genre } = useSelector((state) => state);
@@ -104,11 +105,20 @@ const Featured = ({ type, listRandom }) => {
           ref={videoRef}
           className="video"
           autoPlay
+          muted={muted}
           src={bigMovie.trailer}
         />
       )}
+      <div className="muted" onClick={() => {
+        setMuted(preMuted => !preMuted);
+        if (videoRef.current && videoRef.current.muted) {
+          videoRef.current.muted = !muted;
+        }
+        }}>
+      <i className={muted ? "fas fa-volume-xmark" : "fas fa-volume-high"}></i>
+      </div>
       <div className={`info ${effectTitle && "effect"}`}>
-        <img src={bigMovie.posterTitle} alt="Movie name" className="title" />
+        {bigMovie.posterTitle ? <img src={bigMovie.posterTitle} alt="Movie name" className="title" /> : <div></div>}
         <p className="desc">{bigMovie.desc}</p>
         <div className="buttons">
           <Link to={{ pathname: "/watch", state: { movie: bigMovie } }}>
