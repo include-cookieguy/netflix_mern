@@ -4,7 +4,7 @@ import Featured from "../../components/featured/Featured";
 import Footer from "../../components/footer/Footer";
 import Slider from "../../components/slider/Slider";
 import Navbar from "../../components/navbar/Navbar";
-import { axiosInstance } from "../../utils/fetchData";
+import { axiosAuth } from "../../utils/fetchData";
 import "./home.scss";
 import { GLOBALTYPES } from "../../redux/actions/globalTypes";
 import { useSelector, useDispatch } from "react-redux";
@@ -33,23 +33,24 @@ const Home = ({ type }) => {
   useEffect(() => {
     const getRandomLists = async () => {
       try {
-        const res = await axiosInstance.get(
+        dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } });
+        const res = await axiosAuth.get(
           `lists${type ? "?type=" + type : ""}${
             type && genre ? "&genre=" + genre : ""
-          }`,
-          auth.token
+          }`
         );
         setLists(res.data);
+        dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: false } });
       } catch (err) {
         console.log(err);
       }
     };
     getRandomLists();
-  }, [type, auth.token, genre]);
+  }, [type, genre]);
 
   useEffect(() => {
     dispatch({ type: GLOBALTYPES.GENRE, payload: '' });
-  }, [type])
+  }, [type, dispatch])
 
   return (
     <div className="home">
@@ -61,7 +62,7 @@ const Home = ({ type }) => {
           <Slider mainTitle="Top 10 in Netflix Today" data={dataTopList} top={true} />
           {user.watchAgain.length > 0 && location.pathname === "/" && (
             <Slider
-              mainTitle={`Continue Watching for ${auth.user.username}`}
+              mainTitle={`Continue watching for ${auth.user.username}`}
               data={user.watchAgain}
               poster={false}
               watchAgain={true}
@@ -70,7 +71,7 @@ const Home = ({ type }) => {
           )}
           {user.favouriteMovie.length > 0 && (
             <Slider
-              mainTitle={`${auth.user.username}'s List`}
+              mainTitle={`${auth.user.username}'s Favourite List`}
               data={user.favouriteMovie}
               poster={true}
               type='mylist'

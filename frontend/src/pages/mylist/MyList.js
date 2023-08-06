@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Footer from "../../components/footer/Footer";
 import Navbar from "../../components/navbar/Navbar";
 import { removeAll } from "../../redux/actions/userAction";
-import { axiosInstance } from "../../utils/fetchData";
+import { axiosAuth } from "../../utils/fetchData";
 import "./mylist.scss";
 
 const MyList = () => {
@@ -16,7 +16,7 @@ const MyList = () => {
   useEffect(() => {
     const getRandomLists = async () => {
       try {
-        const res = await axiosInstance.get(`lists`, auth.token);
+        const res = await axiosAuth.get(`lists`);
         setListsForRecommend(res.data);
       } catch (err) {
         console.log(err);

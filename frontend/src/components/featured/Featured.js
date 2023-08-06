@@ -1,7 +1,8 @@
 import { InfoOutlined } from "@material-ui/icons";
 import React, { useEffect, useRef, useState } from "react";
 import Category from "../category/Category";
-import { axiosInstance } from "../../utils/fetchData";
+import { axiosAuth } from "../../utils/fetchData";
+import { GLOBALTYPES } from "../../redux/actions/globalTypes";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import InfoModal from "../infomodal/InfoModal";
@@ -22,13 +23,11 @@ const Featured = ({ type, listRandom }) => {
 
   useEffect(() => {
     const getBigMovie = async () => {
-      //`lists${type ? "?type=" + type : ""}${genre ? "&genre=" + genre : ""
       try {
-        const res = await axiosInstance.get(
+        const res = await axiosAuth.get(
           `movie/random${type ? "?type=" + type : ""}${
             type && genre ? "&genre=" + genre : ""
-          }`,
-          auth.token
+          }`
         );
 
         setBigMovie(res.data);
@@ -37,7 +36,7 @@ const Featured = ({ type, listRandom }) => {
       }
     };
     getBigMovie();
-  }, [auth.token, type, genre]);
+  }, [type, genre]);
 
   useEffect(() => {
     const effectTimeout = setTimeout(() => {
@@ -95,11 +94,20 @@ const Featured = ({ type, listRandom }) => {
     }
   }, [feature, infoModal]);
 
+  const rendered = () => {
+    dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: false } });
+  }
+
+  const rendering = () => {
+    dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } });
+    requestAnimationFrame(rendered)
+  }
+
   return (
     <div className="featured">
       {type && <Category type={type} />}
       {feature === "image" ? (
-        <img src={bigMovie.poster} alt="Movie background" className="poster" />
+        <img onLoad={() => requestAnimationFrame(rendering)} src={bigMovie.poster} alt="Movie background" className="poster" />
       ) : (
         <video
           ref={videoRef}

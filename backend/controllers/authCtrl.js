@@ -26,6 +26,10 @@ const authCtrl = {
         isAdmin: newUser.isAdmin,
       });
 
+      res.cookie("refresh_token", refresh_token, {
+        httpOnly: true,
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      });
 
       await newUser.save();
 
@@ -91,9 +95,13 @@ const authCtrl = {
         isAdmin: user.isAdmin,
       });
 
+      res.cookie("refresh_token", refresh_token, {
+        httpOnly: true,
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      });
 
       res.json({
-        msg: "Login successully!",
+        msg: "Login successfully!",
         access_token,
         user: {
           ...user._doc,
@@ -116,14 +124,14 @@ const authCtrl = {
 
   generateAccessToken: async (req, res) => {
     try {
-      const rf_token = req.cookies.refreshtoken;
+      const rf_token = req.cookies.refresh_token;
       if (!rf_token) return res.status(401).json({ msg: "Session has expired, please login again." });
 
       jwt.verify(
         rf_token,
         process.env.REFRESH_TOKEN_SECRET,
         async (err, result) => {
-          if (err) return res.status(400).json({ msg: "Refresh token has expired, please login again." });
+          if (err) return res.status(401).json({ msg: "Session has expired, please login again." });
 
           const user = await User.findById(result.id).select("-password");
 
@@ -154,7 +162,7 @@ const createAccessToken = (payload) => {
 
 const createRefreshToken = (payload) => {
   return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {
-    expiresIn: "30d",
+    expiresIn: "7d",
   });
 };
 

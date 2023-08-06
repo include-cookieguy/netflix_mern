@@ -16,7 +16,7 @@ const Episode = ({ movie }) => {
     } else if (season === 0) {
       setEpisodeOfSeason(movie.seasons);
     }
-  }, [auth.token, season, movie]);
+  }, [season, movie]);
 
   const handleSelectSeason = (e) => {
     setSeason(parseInt(e.target.value));

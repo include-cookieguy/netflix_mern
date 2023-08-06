@@ -1,9 +1,9 @@
-import axios from 'axios';
+import axios from "axios";
 
-const serverUrl = process.env.REACT_APP_BACKEND_URL;
+const serverUrl = process.env.REACT_APP_BACKEND_URL + "/api/";
 
 const axiosAuth = axios.create({
-  baseURL: serverUrl + '/api/',
+  baseURL: serverUrl,
   withCredentials: true,
 });
 
@@ -27,25 +27,26 @@ axiosAuth.interceptors.response.use(
     const originalRequest = error.config;
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
-      localStorage.removeItem('access_token')
+      localStorage.removeItem("access_token");
 
-      const resFetch = await fetch(baseURL + "request-accesstoken", {
-        credentials: ["include"]
-      })
+      const resFetch = await fetch(serverUrl + "request-accesstoken", {
+        method: 'POST',
+        credentials: ["include"],
+      });
 
       if (resFetch.status === 401) {
-        localStorage.clear()
-        window.location.href = '/login'
+        localStorage.clear();
+        window.location.href = "/login";
       }
-      const resJson = await resFetch.json()
-      const access_token = resJson.access_token
-      localStorage.setItem('access_token', access_token)
+      const resJson = await resFetch.json();
+      const access_token = resJson.access_token;
+      localStorage.setItem("access_token", access_token);
 
       if (access_token) {
         originalRequest.headers = {
           ...originalRequest.headers,
           Authorization: `Bearer ${access_token}`,
-        }
+        };
       }
       return axiosAuth(originalRequest);
     }
@@ -53,7 +54,9 @@ axiosAuth.interceptors.response.use(
   }
 );
 
-export const axiosInstance = axios.create({
-  baseURL,
-  withCredentials: true
+const axiosInstance = axios.create({
+  baseURL: serverUrl,
+  withCredentials: true,
 });
+
+export { axiosAuth, axiosInstance };

@@ -33,14 +33,14 @@ const Watch = () => {
               pausedAt: progressBar.value,
               movieLength: progressBar.max,
             };
-            dispatch(createWatchAgain(auth, watchAgainMovie));
+            dispatch(createWatchAgain(watchAgainMovie));
           } else {
             const watchAgainMovie = {
               ...location.state.movie,
               pausedAt: progressBar.value,
               movieLength: progressBar.max,
             };
-            dispatch(updateWatchAgain(auth, watchAgainMovie));
+            dispatch(updateWatchAgain(watchAgainMovie));
           }
         }
       }

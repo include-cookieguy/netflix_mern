@@ -1,11 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
-import { axiosInstance } from "../../utils/fetchData";
-import { useSelector, useDispatch } from "react-redux";
+import { axiosAuth } from "../../utils/fetchData";
+import { useDispatch } from "react-redux";
 import { GLOBALTYPES } from "../../redux/actions/globalTypes";
 
 const SearchBox = ({ searchQuery }) => {
-  const [resultSearch, setResultSearch] = useState([]);
-  const { auth, search } = useSelector((state) => state);
   const debounceSearch = useRef(null);
   const dispatch = useDispatch();
 
@@ -19,18 +17,15 @@ const SearchBox = ({ searchQuery }) => {
       const getSearch = async () => {
         try {
           if (searchQuery) {
-            const res = await axiosInstance.get(
+            const res = await axiosAuth.get(
               `movie/search${
                 searchQuery
                   ? "?searchString=" + searchQuery
                   : "?searchString=''"
-              }`,
-              auth.token
+              }`
             );
 
             const timeQuery = Date.now() - startTime;
-
-            setResultSearch(res.data);
 
             dispatch({
               type: GLOBALTYPES.GETSEARCH,
@@ -54,7 +49,7 @@ const SearchBox = ({ searchQuery }) => {
       };
       getSearch();
     }, 250);
-  }, [searchQuery, auth.token, dispatch]);
+  }, [searchQuery, dispatch]);
   return <div></div>;
 };
 

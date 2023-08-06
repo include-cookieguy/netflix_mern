@@ -1,11 +1,11 @@
 import {
-  axiosInstance,
+  axiosAuth,
 } from "../../utils/fetchData";
 import { GLOBALTYPES } from "./globalTypes";
 
-export const getFav = (auth) => async (dispatch) => {
+export const getFav = () => async (dispatch) => {
   try {
-    const res = await axiosInstance.get(`user/favlist`, auth.token);
+    const res = await axiosAuth.get(`user/favlist`);
     dispatch({ type: GLOBALTYPES.GETFAV, payload: res.data.favouriteMovie });
   } catch (err) {
     dispatch({
@@ -17,9 +17,9 @@ export const getFav = (auth) => async (dispatch) => {
   }
 };
 
-export const addToFav = (item, auth) => async (dispatch) => {
+export const addToFav = (item) => async (dispatch) => {
   try {
-    const res = await axiosInstance.post(`user/favlist/${item}`, null, auth.token);
+    const res = await axiosAuth.post(`user/favlist/${item}`);
     dispatch({ type: GLOBALTYPES.ADDFAV, payload: res.data.movie });
   } catch (err) {
     dispatch({
@@ -31,9 +31,9 @@ export const addToFav = (item, auth) => async (dispatch) => {
   }
 };
 
-export const deleteToFav = (item, auth) => async (dispatch) => {
+export const deleteToFav = (item) => async (dispatch) => {
   try {
-    await axiosInstance.delete(`user/favlist/${item}`, auth.token);
+    await axiosAuth.delete(`user/favlist/${item}`);
     dispatch({ type: GLOBALTYPES.REMOVEFAV, payload: item });
   } catch (err) {
     dispatch({
@@ -45,9 +45,9 @@ export const deleteToFav = (item, auth) => async (dispatch) => {
   }
 };
 
-export const removeAll = (auth) => async (dispatch) => {
+export const removeAll = () => async (dispatch) => {
   try {
-    await axiosInstance.delete(`user/favlist`, auth.token);
+    await axiosAuth.delete(`user/favlist`);
     dispatch({ type: GLOBALTYPES.REMOVEFAVALL });
   } catch (err) {
     dispatch({
@@ -59,9 +59,9 @@ export const removeAll = (auth) => async (dispatch) => {
   }
 };
 
-export const getWatchAgain = (auth) => async (dispatch) => {
+export const getWatchAgain = () => async (dispatch) => {
   try {
-    const res = await axiosInstance.get(`user/again`, auth.token);
+    const res = await axiosAuth.get(`user/again`);
 
     dispatch({ type: GLOBALTYPES.GETWATCHAGAIN, payload: res.data });
   } catch (err) {
@@ -74,9 +74,9 @@ export const getWatchAgain = (auth) => async (dispatch) => {
   }
 };
 
-export const createWatchAgain = (auth, watchAgainMovie) => async (dispatch) => {
+export const createWatchAgain = (watchAgainMovie) => async (dispatch) => {
   try {
-    await axiosInstance.post(`user/again`, watchAgainMovie, auth.token);
+    await axiosAuth.post(`user/again`, watchAgainMovie);
 
     dispatch({ type: GLOBALTYPES.WATCHAGAIN, payload: watchAgainMovie });
   } catch (err) {
@@ -89,9 +89,9 @@ export const createWatchAgain = (auth, watchAgainMovie) => async (dispatch) => {
   }
 };
 
-export const updateWatchAgain = (auth, watchAgainMovie) => async (dispatch) => {
+export const updateWatchAgain = (watchAgainMovie) => async (dispatch) => {
   try {
-    await axiosInstance.patch(`user/again`, watchAgainMovie, auth.token);
+    await axiosAuth.patch(`user/again`, watchAgainMovie);
 
     dispatch({ type: GLOBALTYPES.SETWATCHAGAIN, payload: watchAgainMovie });
   } catch (err) {
@@ -104,9 +104,9 @@ export const updateWatchAgain = (auth, watchAgainMovie) => async (dispatch) => {
   }
 };
 
-export const deleteWatchAgain = (auth, id) => async (dispatch) => {
+export const deleteWatchAgain = (id) => async (dispatch) => {
   try {
-    await axiosInstance.delete(`user/again/${id}`, auth.token);
+    await axiosAuth.delete(`user/again/${id}`);
 
     dispatch({ type: GLOBALTYPES.REMOVEWATCHAGAIN, payload: id });
   } catch (err) {

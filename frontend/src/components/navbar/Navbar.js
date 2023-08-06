@@ -51,8 +51,7 @@ const Navbar = ({ bgColor, color, borderBottom }) => {
       return e;
     });
     setPathName(pageCurrent);
-    // dispatch({ type: GLOBALTYPES.GENRE, payload: "" });
-    dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } });
+
     if (search.searchInput) {
       dispatch({
         type: GLOBALTYPES.GETSEARCH,
@@ -61,15 +60,6 @@ const Navbar = ({ bgColor, color, borderBottom }) => {
     }
     window.scrollTo(0, 0);
     setSearchQuery("");
-    const fakeLoading = setTimeout(() => {
-      dispatch({
-        type: GLOBALTYPES.ALERT,
-        payload: {
-          loading: false,
-        },
-      });
-    }, 800);
-    return () => clearTimeout(fakeLoading);
   }, [location.pathname, dispatch, search.searchQuery]);
 
   return (

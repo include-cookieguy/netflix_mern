@@ -3,27 +3,17 @@ import { axiosInstance } from "../../utils/fetchData";
 
 export const login = (data) => async (dispatch) => {
   try {
-    dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } });
-    const res = await axiosInstance.get("login", data);
-    setTimeout(() => {
-      dispatch({
-        type: GLOBALTYPES.AUTH,
-        payload: {
-          token: res.data.access_token,
-          user: res.data.user,
-        },
-      });
+    const res = await axiosInstance.post("login", data);
+    dispatch({
+      type: GLOBALTYPES.AUTH,
+      payload: {
+        token: res.data.access_token,
+        user: res.data.user,
+      },
+    });
 
-      localStorage.setItem("access_token", res.data.access_token);
-      localStorage.setItem("user", JSON.stringify(res.data.user));
-
-      dispatch({
-        type: GLOBALTYPES.ALERT,
-        payload: {
-          success: res.data.msg,
-        },
-      });
-    }, 1310);
+    localStorage.setItem("access_token", res.data.access_token);
+    localStorage.setItem("user", JSON.stringify(res.data.user));
   } catch (err) {
     dispatch({
       type: GLOBALTYPES.ALERT,

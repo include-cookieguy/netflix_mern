@@ -44,7 +44,7 @@ const SearchList = () => {
         <div className="time-query">
           {search.searchInput ? (
             <h1 style={{ fontSize: "3.8rem" }}>
-              Search Movie | Series | Actors
+              Search Movies | Series | Actors
             </h1>
           ) : (
             <div
@@ -73,7 +73,7 @@ const SearchList = () => {
           )}
         </div>
         {listGrid.map((e, index) => (
-          <div className="grid-container">
+          <div className="grid-container" key={index}>
             <SearchItem
               movie={e}
               key={index}

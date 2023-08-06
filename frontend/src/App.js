@@ -16,18 +16,19 @@ import { getFav, getWatchAgain } from "./redux/actions/userAction";
 const App = () => {
   const { auth } = useSelector((state) => state);
   const dispatch = useDispatch();
-
+  const token = localStorage.getItem('access_token')
 
   useEffect(() => {
-    if (auth.token) {
-      dispatch(getFav(auth));
-      dispatch(getWatchAgain(auth));
-    } else {
+    if (auth.token && !localStorage.getItem("user")) {
+      dispatch(getFav());
+      dispatch(getWatchAgain());
+    // reload
+    } else if (!auth.token && window.location.pathname !== '/login') {
       auth.token = localStorage.getItem("access_token");
       auth.user = JSON.parse(localStorage.getItem("user"));
       if (auth.token) {
-        dispatch(getFav(auth));
-        dispatch(getWatchAgain(auth));
+        dispatch(getFav());
+        dispatch(getWatchAgain());
       }
     }
   }, [auth, dispatch]);
@@ -36,30 +37,30 @@ const App = () => {
     <Router>
       <Alert />
       <Switch>
-        <Route exact path="/" component={auth.token ? Home : Register} />
+        <Route exact path="/" component={token ? Home : Register} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/submit" component={Submit} />
-        {auth.token && (
+        {token && (
           <Route exact path="/movies">
             <Home type="movies" />
           </Route>
         )}
-        {auth.token && (
+        {token && (
           <Route exact path="/series">
             <Home type="series" />
           </Route>
         )}
-        {auth.token && (
+        {token && (
           <Route exact path="/watch">
             <Watch />
           </Route>
         )}
-        {auth.token && (
+        {token && (
           <Route exact path="/again">
             <WatchAgain />
           </Route>
         )}
-        {auth.token && (
+        {token && (
           <Route exact path="/mylist">
             <MyList />
           </Route>

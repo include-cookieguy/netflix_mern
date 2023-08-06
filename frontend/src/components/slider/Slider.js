@@ -40,7 +40,7 @@ function Slider({ mainTitle, data, poster, top, genre, type }) {
         <h2 className="slider-header">
           <a>
             <div>{mainTitle}</div>
-            <div className="see-more" onClick={() => {
+            {!top && <div className="see-more" onClick={() => {
               if (['mylist', 'again'].includes(type)) {
                 history.push(`${type}`);
               } else {
@@ -48,10 +48,10 @@ function Slider({ mainTitle, data, poster, top, genre, type }) {
                 dispatch({ type: GLOBALTYPES.GENRE, payload: genre });
               }
               window.scrollTo(0, 0);
-            }}>Explore more</div>
-            <div className="see-more-chevron">
+            }}>Explore more</div>}
+            {!top && <div className="see-more-chevron">
               <i className="fas fa-chevron-right"></i>
-            </div>
+            </div>}
           </a>
         </h2>
 
