@@ -117,13 +117,13 @@ const authCtrl = {
   generateAccessToken: async (req, res) => {
     try {
       const rf_token = req.cookies.refreshtoken;
-      if (!rf_token) return res.status(400).json({ msg: "Please login now." });
+      if (!rf_token) return res.status(401).json({ msg: "Session has expired, please login again." });
 
       jwt.verify(
         rf_token,
         process.env.REFRESH_TOKEN_SECRET,
         async (err, result) => {
-          if (err) return res.status(400).json({ msg: "Please login now." });
+          if (err) return res.status(400).json({ msg: "Refresh token has expired, please login again." });
 
           const user = await User.findById(result.id).select("-password");
 

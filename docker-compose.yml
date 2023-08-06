@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3'
 
 services:
   backend:
@@ -9,6 +9,7 @@ services:
     networks:
       - backend
       - frontend
+    container_name: backend
 
   frontend:
     depends_on:
@@ -18,7 +19,8 @@ services:
     ports:
       - "80:80"
     networks:
-      - frontend  
+      - frontend
+    container_name: frontend
 
 networks:
   backend:

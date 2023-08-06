@@ -2,37 +2,58 @@ import axios from 'axios';
 
 const serverUrl = process.env.REACT_APP_BACKEND_URL;
 
-export const getDataAPI = async (url, token) => {
-  const res = await axios.get(`${serverUrl}/api/${url}`, {
-    headers: { Authorization: token },
-  });
-  return res;
-};
+const axiosAuth = axios.create({
+  baseURL: serverUrl + '/api/',
+  withCredentials: true,
+});
 
-export const postDataAPI = async (url, post, token) => {
-  const res = await axios.post(`${serverUrl}/api/${url}`, post, {
-    headers: { Authorization: token },
-  });
-  return res;
-};
+axiosAuth.interceptors.request.use(
+  (config) => {
+    const access_token = localStorage.getItem("access_token");
 
-export const putDataAPI = async (url, post, token) => {
-  const res = await axios.put(`${serverUrl}/api/${url}`, post, {
-    headers: { Authorization: token },
-  });
-  return res;
-};
+    config.headers.Authorization = `Bearer ${access_token}`;
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
-export const patchDataAPI = async (url, post, token) => {
-  const res = await axios.patch(`${serverUrl}/api/${url}`, post, {
-    headers: { Authorization: token },
-  });
-  return res;
-};
+axiosAuth.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  async (error) => {
+    const originalRequest = error.config;
+    if (error.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      localStorage.removeItem('access_token')
 
-export const deleteDataAPI = async (url, token) => {
-  const res = await axios.delete(`${serverUrl}/api/${url}`, {
-    headers: { Authorization: token },
-  });
-  return res;
-};
+      const resFetch = await fetch(baseURL + "request-accesstoken", {
+        credentials: ["include"]
+      })
+
+      if (resFetch.status === 401) {
+        localStorage.clear()
+        window.location.href = '/login'
+      }
+      const resJson = await resFetch.json()
+      const access_token = resJson.access_token
+      localStorage.setItem('access_token', access_token)
+
+      if (access_token) {
+        originalRequest.headers = {
+          ...originalRequest.headers,
+          Authorization: `Bearer ${access_token}`,
+        }
+      }
+      return axiosAuth(originalRequest);
+    }
+    return Promise.reject(error);
+  }
+);
+
+export const axiosInstance = axios.create({
+  baseURL,
+  withCredentials: true
+});

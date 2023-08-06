@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { getDataAPI } from "../../utils/fetchData";
+import { axiosInstance } from "../../utils/fetchData";
 import { useSelector, useDispatch } from "react-redux";
 import { GLOBALTYPES } from "../../redux/actions/globalTypes";
 
@@ -19,7 +19,7 @@ const SearchBox = ({ searchQuery }) => {
       const getSearch = async () => {
         try {
           if (searchQuery) {
-            const res = await getDataAPI(
+            const res = await axiosInstance.get(
               `movie/search${
                 searchQuery
                   ? "?searchString=" + searchQuery

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { getDataAPI } from "../../utils/fetchData";
+import { axiosInstance } from "../../utils/fetchData";
 import RecommendItem from "../recommend-item/RecommendItem";
 import "./recommend.scss";
+import axios from "axios";
 
 const Recommend = ({ movieCurrent }) => {
   const [recommendList, setRecommendList] = useState([]);
@@ -9,7 +10,7 @@ const Recommend = ({ movieCurrent }) => {
   useEffect(() => {
     const getRecommend = async () => {
       try {
-        const res = await getDataAPI(`lists/recommend/${movieCurrent._id}`);
+        const res = await axiosInstance.get(`lists/recommend/${movieCurrent._id}`);
 
         const recommend = res.data[0].result;
 

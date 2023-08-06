@@ -1,7 +1,7 @@
 import { InfoOutlined } from "@material-ui/icons";
 import React, { useEffect, useRef, useState } from "react";
 import Category from "../category/Category";
-import { getDataAPI } from "../../utils/fetchData";
+import { axiosInstance } from "../../utils/fetchData";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import InfoModal from "../infomodal/InfoModal";
@@ -24,7 +24,7 @@ const Featured = ({ type, listRandom }) => {
     const getBigMovie = async () => {
       //`lists${type ? "?type=" + type : ""}${genre ? "&genre=" + genre : ""
       try {
-        const res = await getDataAPI(
+        const res = await axiosInstance.get(
           `movie/random${type ? "?type=" + type : ""}${
             type && genre ? "&genre=" + genre : ""
           }`,

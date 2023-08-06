@@ -22,12 +22,13 @@ const App = () => {
     if (auth.token) {
       dispatch(getFav(auth));
       dispatch(getWatchAgain(auth));
-      console.log('ccc');
     } else {
       auth.token = localStorage.getItem("access_token");
       auth.user = JSON.parse(localStorage.getItem("user"));
-      dispatch(getFav(auth));
-      dispatch(getWatchAgain(auth));
+      if (auth.token) {
+        dispatch(getFav(auth));
+        dispatch(getWatchAgain(auth));
+      }
     }
   }, [auth, dispatch]);
 

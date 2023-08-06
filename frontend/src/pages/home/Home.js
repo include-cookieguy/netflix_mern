@@ -4,7 +4,7 @@ import Featured from "../../components/featured/Featured";
 import Footer from "../../components/footer/Footer";
 import Slider from "../../components/slider/Slider";
 import Navbar from "../../components/navbar/Navbar";
-import { getDataAPI } from "../../utils/fetchData";
+import { axiosInstance } from "../../utils/fetchData";
 import "./home.scss";
 import { GLOBALTYPES } from "../../redux/actions/globalTypes";
 import { useSelector, useDispatch } from "react-redux";
@@ -33,7 +33,7 @@ const Home = ({ type }) => {
   useEffect(() => {
     const getRandomLists = async () => {
       try {
-        const res = await getDataAPI(
+        const res = await axiosInstance.get(
           `lists${type ? "?type=" + type : ""}${
             type && genre ? "&genre=" + genre : ""
           }`,
