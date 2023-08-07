@@ -26,6 +26,7 @@ const dataTopList = [
 
 const Home = ({ type }) => {
   const [lists, setLists] = useState([]);
+  const [featureLoaded, setFeaturedLoaded] = useState(false);
   const { auth, genre, search, user } = useSelector((state) => state);
   const location = useLocation();
   const dispatch = useDispatch();
@@ -34,30 +35,37 @@ const Home = ({ type }) => {
     const getRandomLists = async () => {
       try {
         dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } });
+        setFeaturedLoaded(false)
         const res = await axiosAuth.get(
           `lists${type ? "?type=" + type : ""}${
             type && genre ? "&genre=" + genre : ""
           }`
         );
         setLists(res.data);
-        dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: false } });
+        if (featureLoaded) {
+          dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: false } });
+        }
       } catch (err) {
         console.log(err);
       }
     };
     getRandomLists();
-  }, [type, genre]);
+  }, [type, genre, featureLoaded]);
 
   useEffect(() => {
     dispatch({ type: GLOBALTYPES.GENRE, payload: '' });
   }, [type, dispatch])
+
+  const handleChangeLoaded = (loaded) => {
+    setFeaturedLoaded(loaded)
+  }
 
   return (
     <div className="home">
       <Navbar />
       {!search.searchInput ? (
         <React.Fragment>
-          <Featured type={type} listRandom={lists} />
+          <Featured type={type} handleChangeLoaded={handleChangeLoaded} />
           <div style={{paddingTop: 50}}></div>
           <Slider mainTitle="Top 10 in Netflix Today" data={dataTopList} top={true} />
           {user.watchAgain.length > 0 && location.pathname === "/" && (

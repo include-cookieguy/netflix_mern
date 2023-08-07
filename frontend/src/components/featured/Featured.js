@@ -8,13 +8,13 @@ import { Link, useLocation } from "react-router-dom";
 import InfoModal from "../infomodal/InfoModal";
 import "./featured.scss";
 
-const Featured = ({ type, listRandom }) => {
+const Featured = ({ type, handleChangeLoaded }) => {
   const [bigMovie, setBigMovie] = useState({});
   const [infoModal, setInfoModal] = useState(false);
   const [muted, setMuted] = useState(true);
   const [effectTitle, setEffectTitle] = useState(false);
   const [feature, setFeature] = useState("image");
-  const { auth, genre } = useSelector((state) => state);
+  const { genre } = useSelector((state) => state);
   const [pathName, setPathName] = useState("/");
   const [genreChange, setGenreChange] = useState("");
   const videoRef = useRef(null);
@@ -37,6 +37,13 @@ const Featured = ({ type, listRandom }) => {
     };
     getBigMovie();
   }, [type, genre]);
+
+  // useEffect(() => {
+  //   console.log(featureLoaded, "FEATURE LOADED")
+  //   if (!featureLoaded) {
+  //     dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } });
+  //   }
+  // }, [featureLoaded])
 
   useEffect(() => {
     const effectTimeout = setTimeout(() => {
@@ -94,20 +101,13 @@ const Featured = ({ type, listRandom }) => {
     }
   }, [feature, infoModal]);
 
-  const rendered = () => {
-    dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: false } });
-  }
-
-  const rendering = () => {
-    dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } });
-    requestAnimationFrame(rendered)
-  }
-
   return (
     <div className="featured">
       {type && <Category type={type} />}
       {feature === "image" ? (
-        <img onLoad={() => requestAnimationFrame(rendering)} src={bigMovie.poster} alt="Movie background" className="poster" />
+        <img onLoad={() => {
+          handleChangeLoaded(true)
+        }} src={bigMovie.poster} alt="Movie background" className="poster" />
       ) : (
         <video
           ref={videoRef}

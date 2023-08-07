@@ -25,7 +25,6 @@ const Category = ({ type }) => {
   const { genre } = useSelector((state) => state);
 
   const handleGenre = (e) => {
-    dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } });
     setGenre(e.target.textContent);
     setTimeout(() => {
       dispatch({
