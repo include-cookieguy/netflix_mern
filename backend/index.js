@@ -18,7 +18,7 @@ app.use(cors({
 app.use(cookieParser());
 
 //Routes
-app.use("/upload", require("./routes/uploadRouter"));
+// app.use("/upload", require("./routes/uploadRouter"));
 app.use("/api", require("./routes/authRouter"));
 app.use("/api", require("./routes/usersRouter"));
 app.use("/api", require("./routes/moviesRouter"));
